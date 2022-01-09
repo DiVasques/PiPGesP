@@ -1,33 +1,18 @@
 // base_model.dart
 import 'package:flutter/material.dart';
 import 'package:pipgesp/services/authentication_services.dart';
-import 'package:pipgesp/services/models/authentication_result.dart';
+import 'package:pipgesp/services/models/result.dart';
+import 'package:pipgesp/ui/controllers/base_controller.dart';
 
 /// Represents the state of the view
-enum ViewState { idle, busy, error }
 enum LoginState { login, signUp, forgotPassword }
 
-class LoginController extends ChangeNotifier {
+class LoginController extends BaseController {
   LoginState _loginState = LoginState.login;
-  ViewState _state = ViewState.idle;
-  String _errorMessage = '';
 
   LoginState get loginState => _loginState;
   set loginState(LoginState loginState) {
     _loginState = loginState;
-    notifyListeners();
-  }
-
-  ViewState get state => _state;
-  String get errorMessage => _errorMessage;
-
-  void setState(ViewState viewState) {
-    _state = viewState;
-    notifyListeners();
-  }
-
-  void setErrorMessage(String message) {
-    _errorMessage = message;
     notifyListeners();
   }
 
@@ -106,12 +91,12 @@ class LoginController extends ChangeNotifier {
     }
   }
 
-  Future<AuthenticationResult> handleSignInSignUp() async {
+  Future<Result> handleSignInSignUp() async {
     if (_validateAndSaveFields()) {
       // set view as busy, so it shows a loading indicator
       setState(ViewState.busy);
       if (_loginState == LoginState.login) {
-        AuthenticationResult authResult =
+        Result authResult =
             await AuthenticationServices.emailSingIn(_email, _password);
 
         debugPrint("Status: ${authResult.status.toString()}");
@@ -125,7 +110,7 @@ class LoginController extends ChangeNotifier {
         setState(ViewState.idle);
         return authResult;
       } else if (_loginState == LoginState.signUp) {
-        AuthenticationResult authResult =
+        Result authResult =
             await AuthenticationServices.emailSignUp(
           email: email!,
           name: name!,
@@ -141,22 +126,22 @@ class LoginController extends ChangeNotifier {
         return authResult;
       }
     }
-    return AuthenticationResult(status: false, errorCode: "INV_INPUTS");
+    return Result(status: false, errorCode: "INV_INPUTS");
   }
 
   Future<void> resendVerificationEmail() async {
     await AuthenticationServices.sendVerificationEmail(email: _email!, password: _password!);
   }
 
-  Future<AuthenticationResult> resetPassword() async {
+  Future<Result> resetPassword() async {
     if (_validateAndSaveFields()) {
       setState(ViewState.busy);
-      AuthenticationResult result = await AuthenticationServices.resetPassword(
+      Result result = await AuthenticationServices.resetPassword(
           email: _resetPasswordEmail!);
 
       setState(ViewState.idle);
       return result;
     }
-    return AuthenticationResult(status: false, errorCode: "INV_INPUTS");
+    return Result(status: false, errorCode: "INV_INPUTS");
   }
 }

@@ -19,7 +19,7 @@ class FirestoreHandler {
     await FirebaseFirestore.instance.collection('users').doc(email).set(
       {
         'uid': uid,
-        'displayName': name,
+        'name': name,
         'email': email,
         'registration': registration
       },

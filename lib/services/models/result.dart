@@ -1,8 +1,8 @@
-class AuthenticationResult {
+class Result {
   late bool status;
   late String? errorCode;
   late String? errorMessage;
-  AuthenticationResult({
+  Result({
     required this.status,
     this.errorCode,
     this.errorMessage,

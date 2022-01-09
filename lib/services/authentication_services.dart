@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:pipgesp/main.dart';
-import 'package:pipgesp/repository/models/user.dart';
 import 'package:pipgesp/services/firestore_handler.dart';
-import 'package:pipgesp/services/models/authentication_result.dart';
-import 'package:http/http.dart' as http;
+import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/utils/app_urls.dart';
 
 class AuthenticationServices {
@@ -30,7 +28,7 @@ class AuthenticationServices {
   // static Future<DocumentSnapshot> isUserAuthenticated() async {
   //   DocumentSnapshot document;
 
-  //   firebaseAuth.User? firebaseUser = firebaseAuth.FirebaseAuth.instance.currentUser;
+  //   firebase_auth.User? firebaseUser = firebase_auth.FirebaseAuth.instance.currentUser;
 
   //   if (firebaseUser == null) {
   //     return null;
@@ -44,18 +42,18 @@ class AuthenticationServices {
   //   return document;
   // }
 
-  static Future<AuthenticationResult> emailSignUp({
+  static Future<Result> emailSignUp({
     required String name,
     required String registration,
     required String email,
     required String password,
   }) async {
-    AuthenticationResult authResult = AuthenticationResult(status: false);
+    Result authResult = Result(status: false);
 
     debugPrint("Email: $email");
 
     try {
-      firebaseAuth.User? user = (await firebaseAuth.FirebaseAuth.instance
+      firebase_auth.User? user = (await firebase_auth.FirebaseAuth.instance
               .createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -66,7 +64,7 @@ class AuthenticationServices {
       await FirestoreHandler.addUser(
           uid: user.uid, name: name, email: email, registration: registration);
 
-      await firebaseAuth.FirebaseAuth.instance.signOut();
+      await firebase_auth.FirebaseAuth.instance.signOut();
 
       authResult.status = true;
       return authResult;
@@ -85,7 +83,7 @@ class AuthenticationServices {
         authResult.errorMessage = error.message;
       }
       authResult.status = false;
-      await firebaseAuth.FirebaseAuth.instance.signOut();
+      await firebase_auth.FirebaseAuth.instance.signOut();
       return authResult;
     } catch (e) {
       authResult.errorCode = "error.code";
@@ -95,15 +93,15 @@ class AuthenticationServices {
     }
   }
 
-  static Future<AuthenticationResult> emailSingIn(
+  static Future<Result> emailSingIn(
       String? email, String? password) async {
-    AuthenticationResult authResult = AuthenticationResult(status: false);
+    Result authResult = Result(status: false);
 
     debugPrint("Email: $email");
 
     try {
-      firebaseAuth.User? user =
-          (await firebaseAuth.FirebaseAuth.instance.signInWithEmailAndPassword(
+      firebase_auth.User? user =
+          (await firebase_auth.FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email!,
         password: password!,
       ))
@@ -117,7 +115,7 @@ class AuthenticationServices {
         authResult.status = false;
         authResult.errorCode = emailNotVerifiedCode;
         authResult.errorMessage = emailNotVerifiedMessage;
-        await firebaseAuth.FirebaseAuth.instance.signOut();
+        await firebase_auth.FirebaseAuth.instance.signOut();
       }
 
       return authResult;
@@ -140,17 +138,17 @@ class AuthenticationServices {
   }
 
   static Future<void> userLogout() async {
-    await firebaseAuth.FirebaseAuth.instance.signOut();
+    await firebase_auth.FirebaseAuth.instance.signOut();
 
     main();
   }
 
-  static Future<AuthenticationResult> sendVerificationEmail(
+  static Future<Result> sendVerificationEmail(
       {required String email, required String password}) async {
-    AuthenticationResult authResult = AuthenticationResult(status: false);
+    Result authResult = Result(status: false);
     try {
-      firebaseAuth.User? user =
-          (await firebaseAuth.FirebaseAuth.instance.signInWithEmailAndPassword(
+      firebase_auth.User? user =
+          (await firebase_auth.FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       ))
@@ -160,7 +158,7 @@ class AuthenticationServices {
       authResult.status = true;
       authResult.errorCode = '200';
       authResult.errorMessage = accCreatedVerifyEmailMessage;
-      await firebaseAuth.FirebaseAuth.instance.signOut();
+      await firebase_auth.FirebaseAuth.instance.signOut();
 
       return authResult;
     } on FirebaseException catch (error) {
@@ -170,16 +168,16 @@ class AuthenticationServices {
       return authResult;
     } catch (exception) {
       authResult.status = false;
-      await firebaseAuth.FirebaseAuth.instance.signOut();
+      await firebase_auth.FirebaseAuth.instance.signOut();
       return authResult;
     }
   }
 
-  static Future<AuthenticationResult> resetPassword(
+  static Future<Result> resetPassword(
       {required String email}) async {
-    AuthenticationResult authResult = AuthenticationResult(status: false);
+    Result authResult = Result(status: false);
     try {
-      await firebaseAuth.FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await firebase_auth.FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       authResult.status = true;
       return authResult;
     } on FirebaseException catch (error) {

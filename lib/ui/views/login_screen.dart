@@ -1,10 +1,7 @@
-// ignore_for_file: avoid_print
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pipgesp/services/models/authentication_result.dart';
+import 'package:pipgesp/services/models/result.dart';
+import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/login_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/widgets/login_signup_field.dart';
@@ -480,7 +477,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Material newAccButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(8.0),
-      color: Colors.grey[600], //TODO: Diogo: use themedata
+      color: Colors.grey[600],
       child: MaterialButton(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         onPressed: () async {
@@ -600,7 +597,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               actions: <Widget>[
                 // define os botões na base do dialogo
-                new FlatButton(
+                FlatButton(
                   child: const Text("Ok"),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -617,13 +614,13 @@ class _LoginScreenState extends State<LoginScreen> {
             // retorna um objeto do tipo Dialog
             return AlertDialog(
               content: result.errorCode == 'ERROR_USER_NOT_FOUND'
-                  ? Text(
+                  ? const Text(
                       "O endereço de email inserido não esta cadastrado na plataforma")
-                  : Text(
+                  : const Text(
                       "Ocorreu um erro na operação. Tente novamente mais tarde."),
               actions: <Widget>[
-                new FlatButton(
-                  child: new Text("Ok"),
+                FlatButton(
+                  child: const Text("Ok"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -655,7 +652,7 @@ class _LoginScreenState extends State<LoginScreen> {
             content: const Text("Alert Dialog body"),
             actions: <Widget>[
               // define os botões na base do dialogo
-              new FlatButton(
+              FlatButton(
                 child: const Text("Fechar"),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -669,7 +666,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildErrorDialog(BuildContext context,
-      LoginController loginController, AuthenticationResult result) {
+      LoginController loginController, Result result) {
     List<Widget> buttons = [];
     String? message = '';
 
@@ -708,7 +705,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Alerta",
                 style: TextStyle(color: Colors.grey),
               )
-            : const Text("Erro", style: const TextStyle(color: Colors.grey)),
+            : const Text("Erro", style: TextStyle(color: Colors.grey)),
       ),
       content: Text(
         "$message",
