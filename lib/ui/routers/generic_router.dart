@@ -12,7 +12,7 @@ class GenericRouter {
     WidgetBuilder builder;
     switch (settings.name) {
       case homeRoute:
-        builder = (BuildContext _) => const Home();
+        builder = (BuildContext _) => Home(email: settings.arguments as String);
         break;
       case loginRoute:
         builder = (BuildContext _) => const LoginScreen();

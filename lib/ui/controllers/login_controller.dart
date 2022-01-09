@@ -36,7 +36,6 @@ class LoginController extends ChangeNotifier {
 
   String? _uid;
   String? _name;
-  String? _phoneNumber;
   String? _email;
   String? _password;
   String? _confirmPassword;
@@ -45,7 +44,6 @@ class LoginController extends ChangeNotifier {
 
   String? get uid => _uid;
   String? get name => _name;
-  String? get phoneNumber => _phoneNumber;
   String? get email => _email;
   String? get password => _password;
   String? get confirmPassword => _confirmPassword;
@@ -59,11 +57,6 @@ class LoginController extends ChangeNotifier {
 
   set name(value) {
     _name = value;
-    notifyListeners();
-  }
-
-  set phoneNumber(value) {
-    _phoneNumber = value;
     notifyListeners();
   }
 
@@ -95,7 +88,6 @@ class LoginController extends ChangeNotifier {
   void clearInputs() {
     _uid = null;
     _name = null;
-    _phoneNumber = null;
     _email = null;
     _password = null;
     _confirmPassword = null;
@@ -127,29 +119,43 @@ class LoginController extends ChangeNotifier {
         debugPrint("Error Message: ${authResult.errorMessage.toString()}");
 
         if (authResult.status) {
-          // DocumentSnapshot snapshot = await FirestoreHandler.getUser(
-          //   departamento: User.departamento, empresa: User.empresa
-          // );
-
-          //debugPrint('Nome: ${User.displayName}, UID: ${User.uid}');
+          debugPrint('Logged in as $email');
         }
 
         setState(ViewState.idle);
         return authResult;
       } else if (_loginState == LoginState.signUp) {
-        //AuthenticationResult authResult = await AuthenticationServices.emailSignUp(_password);
+        AuthenticationResult authResult =
+            await AuthenticationServices.emailSignUp(
+          email: email!,
+          name: name!,
+          password: password!,
+          registration: registration!,
+        );
 
-        // AuthenticationResult authResult =
-        //     await AuthenticationServices.emailSignUp(
-        //   name: _name,
-        //   registration: _registration,
-        //   email: _email,
-        //   password: _password,
-        // );
+        debugPrint("Status: ${authResult.status.toString()}");
+        debugPrint("Error Code: ${authResult.errorCode.toString()}");
+        debugPrint("Error Message: ${authResult.errorMessage.toString()}");
 
-        // setState(ViewState.idle);
-        // return authResult;
+        setState(ViewState.idle);
+        return authResult;
       }
+    }
+    return AuthenticationResult(status: false, errorCode: "INV_INPUTS");
+  }
+
+  Future<void> resendVerificationEmail() async {
+    await AuthenticationServices.sendVerificationEmail(email: _email!, password: _password!);
+  }
+
+  Future<AuthenticationResult> resetPassword() async {
+    if (_validateAndSaveFields()) {
+      setState(ViewState.busy);
+      AuthenticationResult result = await AuthenticationServices.resetPassword(
+          email: _resetPasswordEmail!);
+
+      setState(ViewState.idle);
+      return result;
     }
     return AuthenticationResult(status: false, errorCode: "INV_INPUTS");
   }

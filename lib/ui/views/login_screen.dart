@@ -277,9 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onFieldSubmitted: (_) {
             FocusScope.of(context).unfocus();
             if (loginController.loginState == LoginState.login) {
-              //_signInSignUp(loginController);
-              Navigator.pushNamedAndRemoveUntil(context,
-                  GenericRouter.homeRoute, (Route<dynamic> route) => false);
+              _signInSignUp(loginController);
             } else {
               FocusScope.of(context).requestFocus(_nameFocus);
             }
@@ -328,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
           hintText: 'DRE',
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
-          validator: FieldValidators.validateMatricula,
+          validator: FieldValidators.validateRegistration,
           onSaved: (value) => loginController.registration = value,
           focusNode: _registrationFocus,
           style: style,
@@ -383,9 +381,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           onFieldSubmitted: (_) {
             FocusScope.of(context).unfocus();
-            //_signInSignUp(loginController);
-            Navigator.pushNamedAndRemoveUntil(context, GenericRouter.homeRoute,
-                (Route<dynamic> route) => false);
+            _signInSignUp(loginController);
           },
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -411,9 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
             focusNode: _resetPasswordFocus,
             onFieldSubmitted: (_) {
               FocusScope.of(context).unfocus();
-              //_resetPassword(loginController);
-              Navigator.pushNamedAndRemoveUntil(context,
-                  GenericRouter.homeRoute, (Route<dynamic> route) => false);
+              _resetPassword(loginController);
             },
             validator: FieldValidators.validateEmail,
             onSaved: (value) => loginController.resetPasswordEmail = value,
@@ -436,7 +430,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ? emailPasswordInputs
         : loginController.loginState == LoginState.signUp
             ? [
-                //...emailPasswordInputs,
                 Dimensions.heightSpacer(
                     Dimensions.screenHeight(context) * 0.01),
                 ...signUpInputs
@@ -455,26 +448,11 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: loginController.loginState == LoginState.forgotPassword
             ? () async {
                 FocusScope.of(context).unfocus();
-                // _resetPassword(loginController);
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  GenericRouter.homeRoute,
-                  (Route<dynamic> route) => false,
-                );
+                _resetPassword(loginController);
               }
             : () async {
                 FocusScope.of(context).unfocus();
                 _signInSignUp(loginController);
-                // loginController.setState(ViewState.busy);
-                // Timer(
-                //   const Duration(seconds: 3),
-                //   () {
-                //     Navigator.pushNamedAndRemoveUntil(
-                //         context,
-                //         GenericRouter.homeRoute,
-                //         (Route<dynamic> route) => false);
-                //   },
-                // );
               },
         child: loginController.state == ViewState.idle
             ? Text(
@@ -496,29 +474,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
-      ),
-    );
-
-    Material backButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(500),
-      color: Colors.grey[600], //TODO: Diogo: use themedata buttoncolor
-      child: MaterialButton(
-        minWidth: 20,
-        onPressed: () async {
-          FocusScope.of(context).unfocus();
-          loginController.loginState = LoginState.login;
-        },
-        child: const Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
-        // child: Text("Voltar",
-        //     textAlign: TextAlign.center,
-        //     style: style.copyWith(
-        //       color: Colors.white,
-        //       fontWeight: FontWeight.bold,
-        //     )),
       ),
     );
 
@@ -614,12 +569,9 @@ class _LoginScreenState extends State<LoginScreen> {
             loginController.loginState = LoginState.login;
           } else if (loginController.loginState == LoginState.login) {
             // Go to home screen
-            //TODO: PASS EMAIL TO HOME SCREEN
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              GenericRouter.homeRoute,
-              (Route<dynamic> route) => false,
-            );
+            Navigator.pushNamedAndRemoveUntil(context, GenericRouter.homeRoute,
+                (Route<dynamic> route) => false,
+                arguments: loginController.email);
           }
         } else if (!result.status) {
           showDialog(
@@ -633,56 +585,56 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // void _resetPassword(LoginController loginController) {
-  //   loginController.resetPassword().then((result) {
-  //     if (result == null) {
-  //       return null;
-  //     } else if (result.status) {
-  //       loginController.loginState = LoginState.login;
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             content: Text(
-  //               "Siga as instruções contidas no email enviado para o endereço ${loginController.resetPasswordEmail} para redefinir sua senha.",
-  //             ),
-  //             actions: <Widget>[
-  //               // define os botões na base do dialogo
-  //               new FlatButton(
-  //                 child: const Text("Ok"),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     } else {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           // retorna um objeto do tipo Dialog
-  //           return AlertDialog(
-  //             content: result.errorCode == 'ERROR_USER_NOT_FOUND'
-  //                 ? Text(
-  //                     "O endereço de email inserido não esta cadastrado na plataforma")
-  //                 : Text(
-  //                     "Ocorreu um erro na operação. Tente novamente mais tarde."),
-  //             actions: <Widget>[
-  //               new FlatButton(
-  //                 child: new Text("Ok"),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     }
-  //   });
-  // }
+  void _resetPassword(LoginController loginController) {
+    loginController.resetPassword().then((result) {
+      if (!result.status && result.errorCode == "INV_INPUTS") {
+        _showDialog(loginController);
+      } else if (result.status) {
+        loginController.loginState = LoginState.login;
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text(
+                "Siga as instruções contidas no email enviado para o endereço ${loginController.resetPasswordEmail} para redefinir sua senha.",
+              ),
+              actions: <Widget>[
+                // define os botões na base do dialogo
+                new FlatButton(
+                  child: const Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // retorna um objeto do tipo Dialog
+            return AlertDialog(
+              content: result.errorCode == 'ERROR_USER_NOT_FOUND'
+                  ? Text(
+                      "O endereço de email inserido não esta cadastrado na plataforma")
+                  : Text(
+                      "Ocorreu um erro na operação. Tente novamente mais tarde."),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+  }
 
   void _showDialog(LoginController loginController) {
     loginController.handleSignInSignUp().then((result) {
@@ -728,7 +680,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FlatButton(
           child: const Text("Reenviar"),
           onPressed: () async {
-            //await loginController.resendVerificationEmail();
+            await loginController.resendVerificationEmail();
             Navigator.pop(context);
           },
         ),

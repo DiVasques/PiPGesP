@@ -29,9 +29,9 @@ class FieldValidators {
     }
   }
   
-  static String? validateMatricula(String? input){
+  static String? validateRegistration(String? input){
     int matriculaLenght = input!.length;
-    if(matriculaLenght < 1){
+    if(matriculaLenght < 9){
       return 'Insira uma matricula';
     } else {
       return null;

@@ -1,9 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 
 class Home extends StatelessWidget {
-  //final String email;
-  const Home({Key? key}) : super(key: key);
+  final String? email;
+  const Home({Key? key, this.email}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +19,9 @@ class Home extends StatelessWidget {
               'Welcome Home',
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  '(Sanitarium',
-                  style: TextStyle(color: Colors.black, fontSize: 10),
-                ),
-                Icon(
-                  Icons.music_note_sharp,
-                  color: Colors.black,
-                  size: 13,
-                ),
-                Text(
-                  ')',
-                  style: TextStyle(color: Colors.black, fontSize: 10),
-                ),
-              ],
+            Text(
+              '$email',
+              style: TextStyle(color: Colors.black, fontSize: 20),
             ),
             IconButton(
               icon: const Icon(

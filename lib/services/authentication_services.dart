@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:pipgesp/main.dart';
 import 'package:pipgesp/repository/models/user.dart';
+import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/models/authentication_result.dart';
 import 'package:http/http.dart' as http;
 import 'package:pipgesp/utils/app_urls.dart';
@@ -25,7 +26,6 @@ class AuthenticationServices {
   static String accCreatedVerifyEmailMessage =
       'Conta criada com sucesso. Verifique seu email e clique no link de confirmação';
 
-  // static User _userToResendEmail;
 
   // static Future<DocumentSnapshot> isUserAuthenticated() async {
   //   DocumentSnapshot document;
@@ -44,106 +44,56 @@ class AuthenticationServices {
   //   return document;
   // }
 
-  // static Future<AuthenticationResult> createUserOnDatabase({
-  //   required String name,
-  //   required String registration,
-  //   required String email,
-  //   required String uid,
-  //   required String phoneID,
-  // }) async {
-  //   AuthenticationResult authResult = AuthenticationResult(status: false);
-  //   String url = urlEndPoint + "/user";
-  //   bool active = true;
-  //   int points = 0;
-  //   int totalPoints = 0;
-  //   String body = '''
-  //   {
-  //     "name": "$name",
-  //     "registration": "$registration",
-  //     "email": "$email",
-  //     "uid": "$uid",
-  //     "active":  $active,
-  //     "points":  $points,
-  //     "totalPoints": $totalPoints,
-  //     "phoneID": "$phoneID"
+  static Future<AuthenticationResult> emailSignUp({
+    required String name,
+    required String registration,
+    required String email,
+    required String password,
+  }) async {
+    AuthenticationResult authResult = AuthenticationResult(status: false);
 
-  //   }
-  //    ''';
-  //   Map<String, String> headers = new Map<String, String>();
-  //   headers["Content-type"] = "application/json";
-  //   try {
-  //     http.Response response =
-  //         await http.post(url, body: body, headers: headers);
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       print(response.body);
-  //       authResult.status = true;
-  //       authResult.errorMessage = response.body;
-  //       authResult.errorCode = response.statusCode.toString();
-  //     } else {
-  //       authResult.status = false;
-  //       authResult.errorMessage = response.body;
-  //       authResult.errorCode = response.statusCode.toString();
-  //     }
-  //     return authResult;
-  //   } catch (exception) {
-  //     authResult.status = false;
-  //     authResult.errorCode = failedToCreateUserCode;
-  //     authResult.errorMessage =
-  //         failedToCreateUserMessage + exception.toString();
-  //     return authResult;
-  //   }
-  // }
+    debugPrint("Email: $email");
 
-  ///Atualiza as informações do usuário [displayName]
-  // static void _updateUserInfo(User user) async {
-  //   UserUpdateInfo updateInfo = UserUpdateInfo();
-  //   updateInfo.displayName = User.displayName;
-  //   await user.updateProfile(updateInfo);
-  // }
+    try {
+      firebaseAuth.User? user = (await firebaseAuth.FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
+          .user;
+      await user!.sendEmailVerification();
 
-  // static Future<AuthenticationResult> emailSignUp({
-  //   @required String name,
-  //   @required String registration,
-  //   @required String email,
-  //   @required String password,
-  //   @required String phoneID,
-  // }) async {
-  //   AuthenticationResult authResult = AuthenticationResult();
+      await FirestoreHandler.addUser(
+          uid: user.uid, name: name, email: email, registration: registration);
 
-  //   try {
-  //     User user =
-  //         (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     ))
-  //             .user;
-  //     await user.sendEmailVerification();
-  //     authResult = await createUserOnDatabase(
-  //         name: name,
-  //         registration: registration,
-  //         email: email,
-  //         uid: user.uid,
-  //         phoneID: phoneID);
-  //     if (authResult.status) {
-  //       authResult.errorMessage = accCreatedVerifyEmailMessage;
-  //     } else {
-  //       user.delete();
-  //     }
-  //     await FirebaseAuth.instance.signOut();
+      await firebaseAuth.FirebaseAuth.instance.signOut();
 
-  //     return authResult;
-  //   } catch (error) {
-  //     print(error.code);
-  //     authResult.errorCode = error.code;
-  //     if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE')
-  //       authResult.errorMessage = emailAlreadyInUseMessage;
-  //     else
-  //       authResult.errorMessage = error.message;
-  //     authResult.status = false;
-  //     await FirebaseAuth.instance.signOut();
-  //     return authResult;
-  //   }
-  // }
+      authResult.status = true;
+      return authResult;
+    } on PlatformException catch (error) {
+      debugPrint(error.code);
+      authResult.errorCode = error.code;
+      authResult.errorMessage = error.message;
+      authResult.status = false;
+      return authResult;
+    } on FirebaseException catch (error) {
+      debugPrint(error.code);
+      authResult.errorCode = error.code;
+      if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+        authResult.errorMessage = emailAlreadyInUseMessage;
+      } else {
+        authResult.errorMessage = error.message;
+      }
+      authResult.status = false;
+      await firebaseAuth.FirebaseAuth.instance.signOut();
+      return authResult;
+    } catch (e) {
+      authResult.errorCode = "error.code";
+      authResult.errorMessage = "error.message";
+      authResult.status = false;
+      return authResult;
+    }
+  }
 
   static Future<AuthenticationResult> emailSingIn(
       String? email, String? password) async {
@@ -161,7 +111,7 @@ class AuthenticationServices {
 
       //User.uid = user.uid;
 
-      if (user!.emailVerified || true) {
+      if (user!.emailVerified) {
         authResult.status = true;
       } else {
         authResult.status = false;
@@ -181,7 +131,7 @@ class AuthenticationServices {
       authResult.errorMessage = error.message;
       authResult.status = false;
       return authResult;
-    } catch (error){
+    } catch (error) {
       authResult.errorCode = "error.code";
       authResult.errorMessage = "error.message";
       authResult.status = false;
@@ -195,55 +145,52 @@ class AuthenticationServices {
     main();
   }
 
-  // static Future<void> resendVerificationEmail() async {
-  //   try {
-  //     await _userToResendEmail.sendEmailVerification();
-  //   } catch (exception) {
-  //     print(exception.message);
-  //     return exception;
-  //   }
-  // }
+  static Future<AuthenticationResult> sendVerificationEmail(
+      {required String email, required String password}) async {
+    AuthenticationResult authResult = AuthenticationResult(status: false);
+    try {
+      firebaseAuth.User? user =
+          (await firebaseAuth.FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
+              .user;
+      //await Future.delayed(Duration(milliseconds: 1000));
+      await user!.sendEmailVerification();
+      authResult.status = true;
+      authResult.errorCode = '200';
+      authResult.errorMessage = accCreatedVerifyEmailMessage;
+      await firebaseAuth.FirebaseAuth.instance.signOut();
 
-  // static Future<AuthenticationResult> sendVerificationEmail(
-  //     {@required String email, @required String password}) async {
-  //   AuthenticationResult authResult = AuthenticationResult();
-  //   try {
-  //     User user =
-  //         (await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     ))
-  //             .user;
-  //     await Future.delayed(Duration(milliseconds: 1000));
-  //     await user.sendEmailVerification();
-  //     authResult.status = true;
-  //     authResult.errorCode = '200';
-  //     authResult.errorMessage = accCreatedVerifyEmailMessage;
-  //     await FirebaseAuth.instance.signOut();
+      return authResult;
+    } on FirebaseException catch (error) {
+      authResult.errorCode = error.code;
+      authResult.errorMessage = error.message;
+      authResult.status = false;
+      return authResult;
+    } catch (exception) {
+      authResult.status = false;
+      await firebaseAuth.FirebaseAuth.instance.signOut();
+      return authResult;
+    }
+  }
 
-  //     return authResult;
-  //   } catch (exception) {
-  //     print(exception.message);
-  //     authResult.errorCode = exception.code;
-  //     authResult.errorMessage = exception.message;
-  //     authResult.status = false;
-  //     await FirebaseAuth.instance.signOut();
-  //     return authResult;
-  //   }
-  // }
-
-  // static Future<AuthenticationResult> resetPassword(
-  //     {@required String email}) async {
-  //   AuthenticationResult authResult = AuthenticationResult();
-  //   try {
-  //     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-  //     authResult.status = true;
-  //     return authResult;
-  //   } catch (e) {
-  //     authResult.status = false;
-  //     authResult.errorCode = e.code;
-  //     authResult.errorMessage = e.toString();
-  //     return authResult;
-  //   }
-  // }
+  static Future<AuthenticationResult> resetPassword(
+      {required String email}) async {
+    AuthenticationResult authResult = AuthenticationResult(status: false);
+    try {
+      await firebaseAuth.FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      authResult.status = true;
+      return authResult;
+    } on FirebaseException catch (error) {
+      authResult.errorCode = error.code;
+      authResult.errorMessage = error.message;
+      authResult.status = false;
+      return authResult;
+    } catch (e) {
+      authResult.status = false;
+      authResult.errorMessage = e.toString();
+      return authResult;
+    }
+  }
 }
