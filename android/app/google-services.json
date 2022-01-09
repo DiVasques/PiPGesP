@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "611977200958",
+    "project_id": "pipgesp",
+    "storage_bucket": "pipgesp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611977200958:android:53a4a21c64c8b1804c586f",
+        "android_client_info": {
+          "package_name": "com.example.pipgesp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611977200958-vmg9k8ueg3s25u9thcqdc1e4auu6emd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pipgesp",
+            "certificate_hash": "a3eb1caf5ed4585bd89e03554ff6c3f5b17fa794"
+          }
+        },
+        {
+          "client_id": "611977200958-g7eanjjtu51mpu2iudff9p8g3703jimp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhkn0UQpxy40r0gk6e-oxFHWMuCYfR0mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611977200958-g7eanjjtu51mpu2iudff9p8g3703jimp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
