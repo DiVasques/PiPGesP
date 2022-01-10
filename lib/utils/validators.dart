@@ -5,8 +5,7 @@ class FieldValidators {
 
   static String? validateEmail(String? input) {
     input!.trim();
-    String regexString =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@poli.ufrj.br";
+    String regexString = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@poli.ufrj.br";
     RegExp validEmailPattern = RegExp(regexString);
     RegExp requiredEmailPattern = RegExp('$requiredEmailDomain\$');
     if (validEmailPattern.hasMatch(input)) {
@@ -28,14 +27,15 @@ class FieldValidators {
       return null;
     }
   }
-  
-  static String? validateRegistration(String? input){
-    int matriculaLenght = input!.length;
-    if(matriculaLenght < 9){
-      return 'Insira uma matricula';
-    } else {
+
+  static String? validateRegistration(String? input) {
+    input!.trim();
+    RegExp validRegistrationPattern = RegExp(r"^[0-9]{9}");
+    if (validRegistrationPattern.hasMatch(input) && input.length == 9) {
       return null;
-  }
+    } else {
+      return 'Matrícula Inválida';
+    }
   }
 
   static String? validatePwdsMatch(String? confirmPwd, String? pwd) {
