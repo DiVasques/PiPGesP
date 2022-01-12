@@ -14,11 +14,8 @@ class AuthenticationServices {
   static String emailNotVerifiedCode = 'ERROR_EMAIL_NOT_VERIFIED';
   static String emailNotVerifiedMessage =
       'Verifique o código enviado para o seu email';
-  // static String userAlreadyRegisteredCode = 'ERROR_USER_ALREADY_REGISTERED';
-  // static String userAlreadyRegisteredMessage = 'Usuário já cadastrado';
   static String userAlreadyRegisteredCode = 'ERROR_USER_ALREADY_REGISTERED';
-  static String userAlreadyRegisteredMessage =
-      'Data conflict when creating user';
+  static String userAlreadyRegisteredMessage = 'Usuário já cadastrado';
   static String failedToCreateUserCode = 'ERROR_FAILED_TO_CREATE_USER';
   static String failedToCreateUserMessage = 'Falha ao criar usuário. Codigo: ';
   static String accCreatedVerifyEmailMessage =
@@ -67,6 +64,8 @@ class AuthenticationServices {
       await firebase_auth.FirebaseAuth.instance.signOut();
 
       authResult.status = true;
+      authResult.errorMessage = accCreatedVerifyEmailMessage;
+      authResult.errorCode = '201';
       return authResult;
     } on PlatformException catch (error) {
       debugPrint(error.code);
@@ -139,8 +138,6 @@ class AuthenticationServices {
 
   static Future<void> userLogout() async {
     await firebase_auth.FirebaseAuth.instance.signOut();
-
-    main();
   }
 
   static Future<Result> sendVerificationEmail(

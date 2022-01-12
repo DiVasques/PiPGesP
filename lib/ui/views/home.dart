@@ -1,9 +1,8 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/home_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
+import 'package:pipgesp/ui/widgets/home_drawer.dart';
 import 'package:pipgesp/utils/dimensions.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +12,23 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return ChangeNotifierProvider(
       create: (_) => HomeController(email: email!),
       child: Consumer<HomeController>(
         builder: (context, homeController, _) {
           return Scaffold(
+            drawer: HomeDrawer(),
+            appBar: AppBar(
+              iconTheme: IconThemeData(color: theme.primaryColor),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              title: Text(
+                "PiPGesP",
+                style: TextStyle(color: theme.primaryColor),
+              ),
+            ),
             backgroundColor: homeController.state == ViewState.error
                 ? Colors.red[400]
                 : Colors.white,
@@ -34,7 +45,7 @@ class Home extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Welcome, ${homeController.user.name}',
+                              'Bem-vindo, ${homeController.user.name}',
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),
                             ),
@@ -47,26 +58,6 @@ class Home extends StatelessWidget {
                               '${homeController.user.registration}',
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                size: 30,
-                              ),
-                              onPressed: () =>
-                                  Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      GenericRouter.loginRoute,
-                                      (route) => false),
-                              color: Colors.black,
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.replay_outlined,
-                                size: 30,
-                              ),
-                              onPressed: () => homeController.getUser(),
-                              color: Colors.black,
                             ),
                           ],
                         )

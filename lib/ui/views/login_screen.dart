@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pipgesp/services/models/result.dart';
@@ -26,6 +28,10 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode _confirmPasswordFocus;
   late FocusNode _resetPasswordFocus;
   static const TextStyle style = TextStyle(fontSize: 20.0);
+
+  final String EMAIL_NOT_FOUND = 'user-not-found';
+  final String ERROR_WRONG_PASSWORD = 'wrong-password';
+  final String ERROR_EMAIL_ALREADY_USE = 'email-already-in-use';
 
   @override
   void initState() {
@@ -613,7 +619,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (BuildContext context) {
             // retorna um objeto do tipo Dialog
             return AlertDialog(
-              content: result.errorCode == 'ERROR_USER_NOT_FOUND'
+              content: result.errorCode == EMAIL_NOT_FOUND
                   ? const Text(
                       "O endereço de email inserido não esta cadastrado na plataforma")
                   : const Text(
@@ -670,8 +676,11 @@ class _LoginScreenState extends State<LoginScreen> {
     List<Widget> buttons = [];
     String? message = '';
 
-    if (result.errorCode == 'ERROR_EMAIL_NOT_VERIFIED') {
-      message =
+    if (result.errorCode == 'ERROR_EMAIL_NOT_VERIFIED' || result.errorCode == ERROR_EMAIL_ALREADY_USE) {
+      if (result.errorCode == ERROR_EMAIL_ALREADY_USE) {
+        message = 'Email já registrado. ';
+      }
+      message +=
           'Acesse o link enviado para o email cadastrado para confirmar sua conta.';
       buttons.add(
         FlatButton(
@@ -682,8 +691,8 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
       );
-    } else if (result.errorCode == 'ERROR_USER_NOT_FOUND' ||
-        result.errorCode == 'ERROR_WRONG_PASSWORD') {
+    } else if (result.errorCode == EMAIL_NOT_FOUND ||
+        result.errorCode == ERROR_WRONG_PASSWORD) {
       message = 'Usuário e/ou senha incorretos.';
     } else {
       message = result.errorMessage;
