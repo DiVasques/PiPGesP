@@ -7,9 +7,9 @@ import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/login_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/widgets/login_signup_field.dart';
-import 'package:pipgesp/utils/app_colors.dart';
-import 'package:pipgesp/utils/dimensions.dart';
-import 'package:pipgesp/utils/validators.dart';
+import 'package:pipgesp/ui/utils/app_colors.dart';
+import 'package:pipgesp/ui/utils/dimensions.dart';
+import 'package:pipgesp/ui/utils/validators.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {

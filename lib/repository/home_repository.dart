@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pipgesp/repository/models/user.dart';
 import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/models/result.dart';
+import 'package:pipgesp/services/utils/database_collections.dart';
 
 class HomeRepository {
   late User user;
@@ -11,9 +12,17 @@ class HomeRepository {
     Result result = Result(status: false);
 
     try {
-      DocumentSnapshot snapshot = await FirestoreHandler.getUser(email: email);
+      DocumentSnapshot snapshot = await FirestoreHandler.getDocument(
+        identifier: email,
+        collection: DatabaseCollections.users,
+      );
       debugPrint(snapshot.data().toString());
-      user = User(uid: snapshot.get('uid'), name: snapshot.get('name'), email: snapshot.get('email'), registration: snapshot.get('registration'));
+      user = User(
+        uid: snapshot.get('uid'),
+        name: snapshot.get('name'),
+        email: snapshot.get('email'),
+        registration: snapshot.get('registration'),
+      );
       debugPrint(user.uid);
       debugPrint(snapshot.get('uid'));
       result.status = true;

@@ -1,28 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreHandler {
-  ///Retorna documento [QuerySnapshot] do usuário selecionado
-  static Future<DocumentSnapshot> getUser(
-      {required String email}) async {
-    DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('users').doc(email).get();
+  ///Retorna documento [QuerySnapshot] da coleção selecionada
+  static Future<DocumentSnapshot> getDocument({
+    required String identifier,
+    required String collection,
+  }) async {
+    DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(identifier)
+        .get();
     return document;
   }
 
-  ///Adiciona usuário ao banco de dados
-  static Future<void> addUser({
-    required String uid,
-    required String name,
-    required String email,
-    required String registration,
+  ///Adiciona documento ao banco de dados
+  static Future<void> addDocument({
+    required String identifier,
+    required String collection,
+    required Map<String, dynamic> params,
   }) async {
-    await FirebaseFirestore.instance.collection('users').doc(email).set(
-      {
-        'uid': uid,
-        'name': name,
-        'email': email,
-        'registration': registration
-      },
-    );
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(identifier)
+        .set(params);
   }
 }

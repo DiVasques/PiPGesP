@@ -3,7 +3,7 @@ import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/home_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/widgets/home_drawer.dart';
-import 'package:pipgesp/utils/dimensions.dart';
+import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {

@@ -5,11 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:pipgesp/main.dart';
 import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/models/result.dart';
-import 'package:pipgesp/utils/app_urls.dart';
+import 'package:pipgesp/services/utils/database_collections.dart';
 
 class AuthenticationServices {
-  static String urlEndPoint = AppUrls.endPoint;
-
   static String emailAlreadyInUseMessage = 'Este email já está em uso';
   static String emailNotVerifiedCode = 'ERROR_EMAIL_NOT_VERIFIED';
   static String emailNotVerifiedMessage =
@@ -20,7 +18,6 @@ class AuthenticationServices {
   static String failedToCreateUserMessage = 'Falha ao criar usuário. Codigo: ';
   static String accCreatedVerifyEmailMessage =
       'Conta criada com sucesso. Verifique seu email e clique no link de confirmação';
-
 
   // static Future<DocumentSnapshot> isUserAuthenticated() async {
   //   DocumentSnapshot document;
@@ -58,8 +55,18 @@ class AuthenticationServices {
           .user;
       await user!.sendEmailVerification();
 
-      await FirestoreHandler.addUser(
-          uid: user.uid, name: name, email: email, registration: registration);
+      Map<String, dynamic> params = {
+        'uid': user.uid,
+        'name': name,
+        'email': email,
+        'registration': registration
+      };
+
+      await FirestoreHandler.addDocument(
+        collection: DatabaseCollections.users,
+        identifier: email,
+        params: params,
+      );
 
       await firebase_auth.FirebaseAuth.instance.signOut();
 
@@ -92,8 +99,7 @@ class AuthenticationServices {
     }
   }
 
-  static Future<Result> emailSingIn(
-      String? email, String? password) async {
+  static Future<Result> emailSingIn(String? email, String? password) async {
     Result authResult = Result(status: false);
 
     debugPrint("Email: $email");
@@ -170,11 +176,11 @@ class AuthenticationServices {
     }
   }
 
-  static Future<Result> resetPassword(
-      {required String email}) async {
+  static Future<Result> resetPassword({required String email}) async {
     Result authResult = Result(status: false);
     try {
-      await firebase_auth.FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await firebase_auth.FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email);
       authResult.status = true;
       return authResult;
     } on FirebaseException catch (error) {

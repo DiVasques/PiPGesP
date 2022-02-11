@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pipgesp/utils/hex_color.dart';
+import 'package:pipgesp/ui/utils/hex_color.dart';
 
 class AppColors{
   static final HexColor backgroundLightBlue = HexColor('e9f2f2');
