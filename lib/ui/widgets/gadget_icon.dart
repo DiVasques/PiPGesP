@@ -16,7 +16,7 @@ class GadgetIcon extends StatelessWidget {
           case GadgetType.temp:
             return Icons.thermostat;
           case GadgetType.decoupler:
-            return Icons.camera_outlined;
+            return Icons.remove_moderator;
           default:
         }
       }(),
