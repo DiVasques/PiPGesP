@@ -22,4 +22,8 @@ class AppColors{
   static const Color goalOfTheDayMarker = Colors.lightBlue;
 
   static const Color attributeTextColor = Colors.blueGrey;
+
+
+  static final HexColor darkText = HexColor('3b3b3b');
+  static final HexColor lightDarkText = HexColor('616161');
 }
