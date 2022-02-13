@@ -97,7 +97,6 @@ class Home extends StatelessWidget {
                     return ListView(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                      shrinkWrap: true,
                       children: [
                             Text(
                               'Dispositivos Cadastrados',

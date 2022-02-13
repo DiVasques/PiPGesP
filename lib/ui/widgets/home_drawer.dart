@@ -14,108 +14,123 @@ class HomeDrawer extends StatelessWidget {
     return Consumer<HomeController>(
       builder: (context, homeController, _) {
         return homeController.state == ViewState.busy
-            ? Center(
-                child: CircularProgressIndicator(
-                    backgroundColor: theme.primaryColor),
-              )
+            ? Container()
             : Drawer(
                 child: SafeArea(
                   child: homeController.state == ViewState.error
-                      ? Stack(
-                          alignment: Alignment.center,
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GestureDetector(
-                              child: SizedBox(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text("Recarregar"),
-                                    Icon(
-                                      Icons.replay_outlined,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ],
-                                ),
+                            Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                            left: 20, bottom: 5),
+                                        alignment: Alignment.bottomLeft,
+                                        height: 50,
+                                        child: Text(
+                                          "Erro ao carregar os dados",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: theme.primaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                      ListTile(
+                                        title: Text("Recarregar"),
+                                        trailing: Icon(
+                                          Icons.replay_outlined,
+                                          color: theme.primaryColor,
+                                        ),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          homeController.getUser();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ListTile(
+                              title: Text("Sair"),
+                              trailing: Icon(
+                                Icons.exit_to_app,
+                                color: theme.primaryColor,
                               ),
                               onTap: () {
-                                Navigator.pop(context);
-                                homeController.getUser();
+                                AuthenticationServices.userLogout();
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  GenericRouter.loginRoute,
+                                  (Route<dynamic> route) => false,
+                                );
                               },
-                            ),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: ListTile(
-                                title: Text("Sair"),
-                                trailing: Icon(
-                                  Icons.exit_to_app,
-                                  color: theme.primaryColor,
-                                ),
-                                onTap: () {
-                                  AuthenticationServices.userLogout();
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    GenericRouter.loginRoute,
-                                    (Route<dynamic> route) => false,
-                                  );
-                                },
-                              ),
                             ),
                           ],
                         )
-                      : Stack(
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ConstrainedBox(
-                                  constraints:
-                                      BoxConstraints.tightFor(height: 50),
-                                  child: Container(
-                                    padding: EdgeInsets.only(left: 20, bottom: 5),
-                                    alignment: Alignment.bottomLeft,
-                                    height: 300,
-                                    child: Text(
-                                      "Bem-vindo, ${homeController.user.name.split(" ")[0]}",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: theme.primaryColor,
+                            Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                            left: 20, bottom: 5),
+                                        alignment: Alignment.bottomLeft,
+                                        height: 50,
+                                        child: Text(
+                                          "Bem-vindo, ${homeController.user.name.split(" ")[0]}",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: theme.primaryColor,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      SizedBox(height: 20),
+                                      ListTile(
+                                        title: Text("Recarregar"),
+                                        trailing: Icon(
+                                          Icons.replay_outlined,
+                                          color: theme.primaryColor,
+                                        ),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          homeController.getUser();
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(height: 20),
-                                ListTile(
-                                  title: Text("Recarregar"),
-                                  trailing: Icon(
-                                    Icons.replay_outlined,
-                                    color: theme.primaryColor,
-                                  ),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    homeController.getUser();
-                                  },
-                                ),
-                              ],
-                            ),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: ListTile(
-                                title: Text("Sair"),
-                                trailing: Icon(
-                                  Icons.exit_to_app,
-                                  color: theme.primaryColor,
-                                ),
-                                onTap: () {
-                                  AuthenticationServices.userLogout();
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    GenericRouter.loginRoute,
-                                    (Route<dynamic> route) => false,
-                                  );
-                                },
+                                ],
                               ),
+                            ),
+                            ListTile(
+                              title: Text("Sair"),
+                              trailing: Icon(
+                                Icons.exit_to_app,
+                                color: theme.primaryColor,
+                              ),
+                              onTap: () {
+                                AuthenticationServices.userLogout();
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  GenericRouter.loginRoute,
+                                  (Route<dynamic> route) => false,
+                                );
+                              },
                             ),
                           ],
                         ),
