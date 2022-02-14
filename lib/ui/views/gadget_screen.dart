@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/gadget_controller.dart';
-import 'package:pipgesp/ui/routers/generic_router.dart';
-import 'package:pipgesp/ui/widgets/home_drawer.dart';
+import 'package:pipgesp/ui/utils/app_colors.dart';
+import 'package:pipgesp/ui/utils/gadget_devices.dart';
+import 'package:pipgesp/ui/utils/gadget_types.dart';
+import 'package:pipgesp/ui/widgets/gadget_icon.dart';
 import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:pipgesp/utils/string_capitalize.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,7 @@ class GadgetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ChangeNotifierProvider(
-      create: (_) => GadgetController(id: gadget.id),
+      create: (_) => GadgetController(physicalPort: gadget.physicalPort),
       child: Consumer<GadgetController>(
         builder: (context, gadgetController, _) {
           return Scaffold(
@@ -24,73 +26,119 @@ class GadgetScreen extends StatelessWidget {
               iconTheme: IconThemeData(color: theme.primaryColor),
               elevation: 0,
               backgroundColor: Colors.transparent,
-              centerTitle: true,
-              title: Text(
-                "${gadget.name.toTitleCase()}",
-                style: TextStyle(color: theme.primaryColor),
-              ),
             ),
-            backgroundColor: gadgetController.state == ViewState.error
-                ? Colors.red[400]
-                : Colors.white,
-            body: Center(
-              child: gadgetController.state == ViewState.busy
-                  ? SizedBox(
+            backgroundColor: Colors.white,
+            body: () {
+              switch (gadgetController.state) {
+                case ViewState.busy:
+                  return Center(
+                    child: SizedBox(
                       height: Dimensions.screenHeight(context) * 0.04,
                       width: Dimensions.screenHeight(context) * 0.04,
                       child: const CircularProgressIndicator(),
-                    )
-                  : gadgetController.state == ViewState.idle
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Bem-vindo, ${gadgetController.id}',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                            Text(
-                              "Porta ${() {
-                                switch (gadget.physicalPort) {
-                                  case 999:
-                                    return 'serial';
-                                  case 777:
-                                    return 'USB';
-                                  default:
-                                    return gadget.physicalPort.toString();
-                                }
-                              }()}",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Error',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            Text(
-                              gadgetController.errorMessage,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.replay_outlined,
-                                size: 30,
-                              ),
-                              onPressed: () => gadgetController.getGadgetData(),
-                              color: Colors.white,
-                            ),
-                          ],
+                    ),
+                  );
+                case ViewState.error:
+                  return Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Dado Indisponível no Momento',
+                          style: TextStyle(color: AppColors.defaultGrey, fontSize: 20),
                         ),
-            ),
+                        Text(
+                          gadgetController.errorMessage,
+                          style: TextStyle(color: AppColors.defaultGrey, fontSize: 20),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.replay_outlined,
+                            size: 30,
+                          ),
+                          onPressed: () => gadgetController.getGadgetData(),
+                          color: AppColors.defaultGrey,
+                        ),
+                      ],
+                    ),
+                  );
+                case ViewState.idle:
+                  return ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          '${gadget.name.toTitleCase()}',
+                          style: TextStyle(
+                            color: AppColors.darkText,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      GadgetIcon(
+                        device: gadget.device,
+                        size: 80,
+                        color: gadgetController.outputFormValue
+                            ? theme.primaryColor
+                            : null,
+                      ),
+                      SizedBox(height: 15),
+                      () {
+                        switch (gadget.iotype) {
+                          case GadgetType.output:
+                            return SwitchListTile(
+                              title: Text('Ativar/Desativar'),
+                              value: gadgetController.outputFormValue,
+                              onChanged: (value) {
+                                gadgetController.setGadgetOutput(value);
+                              },
+                            );
+                          case GadgetType.input:
+                            switch (gadget.device) {
+                              case GadgetDevice.lamp:
+                                return Container(
+                                  height: 46,
+                                  color: Colors.grey,
+                                );
+                              case GadgetDevice.thermometer:
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Temperatura'),
+                                    Text(
+                                        '${gadgetController.gadgetData.data.toString()}°C',
+                                        style: TextStyle(fontSize: 16)),
+                                  ],
+                                );
+                              case GadgetDevice.decoupler:
+                                return Container(
+                                  height: 46,
+                                  color: Colors.grey,
+                                );
+                            }
+                          case GadgetType.serial:
+                            return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Tags Removidas'),
+                                    Text(
+                                        '${gadgetController.gadgetData.data.toString()}',
+                                        style: TextStyle(fontSize: 16)),
+                                  ],
+                                );
+                        }
+                      }()
+                    ],
+                  );
+              }
+            }(),
           );
         },
       ),

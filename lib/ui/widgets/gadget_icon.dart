@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
-import 'package:pipgesp/ui/utils/gadget_types.dart';
+import 'package:pipgesp/ui/utils/gadget_devices.dart';
 
 class GadgetIcon extends StatelessWidget {
-  final String type;
-  const GadgetIcon({Key? key, required this.type}) : super(key: key);
+  final GadgetDevice device;
+  final double? size;
+  final Color? color;
+  const GadgetIcon({Key? key, required this.device, this.size = 30, this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Icon(
       () {
-        switch (type) {
-          case GadgetType.lamp:
+        switch (device) {
+          case GadgetDevice.lamp:
             return Icons.lightbulb;
-          case GadgetType.temp:
+          case GadgetDevice.thermometer:
             return Icons.thermostat;
-          case GadgetType.decoupler:
+          case GadgetDevice.decoupler:
             return Icons.remove_moderator;
           default:
         }
       }(),
-      color: AppColors.defaultGrey,
-      size: 30,
+      color: color ?? AppColors.defaultGrey,
+      size: size,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
+import 'package:pipgesp/ui/utils/gadget_types.dart';
 import 'package:pipgesp/ui/widgets/gadget_icon.dart';
 import 'package:pipgesp/utils/string_capitalize.dart';
 
@@ -36,16 +37,7 @@ class GadgetTile extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "Porta ${() {
-                      switch (gadget.physicalPort) {
-                        case 999:
-                          return 'serial';
-                        case 777:
-                          return 'USB';
-                        default:
-                          return gadget.physicalPort.toString();
-                      }
-                    }()}",
+                    "Porta ${gadget.physicalPort} (${gadget.iotype.toValueString()})",
                     style: TextStyle(
                       color: AppColors.darkText,
                       fontSize: 12,
@@ -53,7 +45,7 @@ class GadgetTile extends StatelessWidget {
                   ),
                 ],
               ),
-              GadgetIcon(type: gadget.type),
+              GadgetIcon(device: gadget.device),
             ],
           ),
         ),

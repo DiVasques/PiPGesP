@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/user.dart';
+import 'package:pipgesp/repository/utils/utils.dart';
 import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/services/utils/database_collections.dart';
@@ -27,7 +28,8 @@ class HomeRepository {
       );
       for (Map<String, dynamic> gadgetMap in snapshot.get('gadgets')) {
         Gadget gadget = Gadget(
-          type: gadgetMap['type'] as String,
+          device: Utils.processDevice(gadgetMap['device'] as String),
+          iotype: Utils.processIOType(gadgetMap['iotype'] as String),
           name: gadgetMap['name'] as String,
           physicalPort: gadgetMap['physicalPort'] as int,
           id: gadgetMap['id'] as String,

@@ -1,0 +1,7 @@
+{
+    "string": "led",
+    "iotype": "output",
+    "datatype": "bool",
+    "data": true,
+    "last": 1626472231
+}

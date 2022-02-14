@@ -1,0 +1,1 @@
+enum DataType {bool, string, map, float}
