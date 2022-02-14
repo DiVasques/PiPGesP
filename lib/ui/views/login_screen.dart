@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         const EdgeInsets.only(
                                                             right: 8),
                                                     child: FlatButton(
-                                                        textColor: Colors.blue,
+                                                        textColor: Theme.of(context).primaryColor,
                                                         onPressed: () {
                                                           loginController
                                                                   .loginState =
@@ -445,7 +445,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Material signButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(8.0),
-      color: Colors.blue,
+      color: Theme.of(context).primaryColor,
       child: MaterialButton(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         onPressed: loginController.loginState == LoginState.forgotPassword
@@ -523,7 +523,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
               FlatButton(
-                  textColor: Colors.blue,
+                  textColor: Theme.of(context).primaryColor,
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
                     loginController.loginState = LoginState.signUp;
