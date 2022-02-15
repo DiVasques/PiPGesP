@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/ui/views/home.dart';
 import 'package:pipgesp/ui/views/login_screen.dart';
 import 'package:pipgesp/ui/views/gadget_screen.dart';
@@ -24,7 +23,11 @@ class GenericRouter {
         builder = (BuildContext _) => const SplashScreen();
         break;
       case gadgetRoute:
-        builder = (BuildContext _) => GadgetScreen(gadget: settings.arguments as Gadget);
+        builder = (BuildContext _) => GadgetScreen(
+              gadget: (settings.arguments as Map<String, dynamic>)["gadget"],
+              identifier:
+                  (settings.arguments as Map<String, dynamic>)["identifier"],
+            );
         break;
       default:
         return MaterialPageRoute(

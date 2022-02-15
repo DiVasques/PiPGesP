@@ -1,5 +1,6 @@
 // base_model.dart
 import 'package:pipgesp/repository/gadget_repository.dart';
+import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/gadget_data.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
@@ -24,10 +25,12 @@ class GadgetController extends BaseController {
 
   Future<void> getGadgetData() async {
     setState(ViewState.busy);
-    Result result = await _gadgetRepository.getGadgetData(physicalPort: physicalPort);
+    Result result =
+        await _gadgetRepository.getGadgetData(physicalPort: physicalPort);
 
     if (result.status) {
-      if (gadgetData.iotype == GadgetType.output && gadgetData.dataType == DataType.bool){
+      if (gadgetData.iotype == GadgetType.output &&
+          gadgetData.dataType == DataType.bool) {
         outputFormValue = gadgetData.data as bool;
       }
       setState(ViewState.idle);
@@ -39,8 +42,8 @@ class GadgetController extends BaseController {
 
   Future<void> setGadgetOutput(bool value) async {
     setState(ViewState.busy);
-    Result result =
-        await _gadgetRepository.setGadgetOutput(physicalPort: physicalPort, output: value);
+    Result result = await _gadgetRepository.setGadgetOutput(
+        physicalPort: physicalPort, output: value);
     if (result.status) {
       outputFormValue = value;
       setState(ViewState.idle);
@@ -48,5 +51,16 @@ class GadgetController extends BaseController {
       setErrorMessage(result.errorMessage!);
       setState(ViewState.error);
     }
+  }
+
+  Future<bool> deleteGadget(String identifier, Gadget gadget) async {
+    setState(ViewState.busy);
+    Result result = await _gadgetRepository.deleteGadget(
+        identifier: identifier, gadget: gadget);
+    if (!result.status) {
+      setErrorMessage(result.errorMessage!);
+      setState(ViewState.error);
+    }
+    return result.status;
   }
 }

@@ -24,7 +24,9 @@ class Home extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               backgroundColor: theme.primaryColor,
               tooltip: "Adicionar Dispositivo",
-              onPressed: () {},
+              onPressed: () {
+                homeController.addGadget();
+              },
               elevation: 0,
               child: Icon(
                 Icons.add,
@@ -44,9 +46,7 @@ class Home extends StatelessWidget {
                     fontSize: 22),
               ),
             ),
-            backgroundColor: homeController.state == ViewState.error
-                ? Colors.red[400]
-                : Colors.white,
+            backgroundColor: Colors.white,
             body: () {
               switch (homeController.state) {
                 case ViewState.busy:
@@ -115,6 +115,7 @@ class Home extends StatelessWidget {
                             for (Gadget gadget in homeController.user.gadgets) {
                               widgets.add(GadgetTile(
                                 gadget: gadget,
+                                identifier: homeController.user.email,
                               ));
                             }
                             return widgets;

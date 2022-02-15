@@ -8,7 +8,9 @@ import 'package:pipgesp/utils/string_capitalize.dart';
 
 class GadgetTile extends StatelessWidget {
   final Gadget gadget;
-  const GadgetTile({Key? key, required this.gadget}) : super(key: key);
+  final String identifier;
+  const GadgetTile({Key? key, required this.gadget, required this.identifier})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class GadgetTile extends StatelessWidget {
       elevation: 1,
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, GenericRouter.gadgetRoute,
-            arguments: gadget),
+            arguments: {"gadget": gadget, "identifier": identifier}),
         child: Padding(
           padding: const EdgeInsets.all(8.5),
           child: Row(

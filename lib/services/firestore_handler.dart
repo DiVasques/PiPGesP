@@ -24,4 +24,34 @@ class FirestoreHandler {
         .doc(identifier)
         .set(params);
   }
+
+  ///Adiciona item a um array de documento do banco de dados
+  static Future<void> addOnArray({
+    required String identifier,
+    required String collection,
+    required String field,
+    required dynamic param,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(identifier)
+        .update({
+      field: FieldValue.arrayUnion([param])
+    });
+  }
+
+  ///Remove item de um array de documento do banco de dados
+  static Future<void> deleteFromArray({
+    required String identifier,
+    required String collection,
+    required String field,
+    required dynamic param,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(identifier)
+        .update({
+      field: FieldValue.arrayRemove([param])
+    });
+  }
 }

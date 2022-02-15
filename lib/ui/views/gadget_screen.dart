@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/gadget_controller.dart';
+import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
 import 'package:pipgesp/ui/utils/gadget_devices.dart';
 import 'package:pipgesp/ui/utils/gadget_types.dart';
@@ -12,7 +13,9 @@ import 'package:provider/provider.dart';
 
 class GadgetScreen extends StatelessWidget {
   final Gadget gadget;
-  const GadgetScreen({Key? key, required this.gadget}) : super(key: key);
+  final String identifier;
+  const GadgetScreen({Key? key, required this.gadget, required this.identifier})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +49,13 @@ class GadgetScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Dado Indisponível no Momento',
-                          style: TextStyle(color: AppColors.defaultGrey, fontSize: 20),
+                          style: TextStyle(
+                              color: AppColors.defaultGrey, fontSize: 20),
                         ),
                         Text(
                           gadgetController.errorMessage,
-                          style: TextStyle(color: AppColors.defaultGrey, fontSize: 20),
+                          style: TextStyle(
+                              color: AppColors.defaultGrey, fontSize: 20),
                         ),
                         IconButton(
                           icon: const Icon(
@@ -69,14 +74,38 @@ class GadgetScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: Text(
-                          '${gadget.name.toTitleCase()}',
-                          style: TextStyle(
-                            color: AppColors.darkText,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${gadget.name.toTitleCase()}',
+                              style: TextStyle(
+                                color: AppColors.darkText,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                gadgetController
+                                    .deleteGadget(identifier, gadget)
+                                    .then((bool result) {
+                                  if (result) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        GenericRouter.homeRoute,
+                                        (route) => false,
+                                        arguments: identifier);
+                                  }
+                                });
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: AppColors.defaultGrey,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       SizedBox(height: 15),
@@ -124,15 +153,14 @@ class GadgetScreen extends StatelessWidget {
                             }
                           case GadgetType.serial:
                             return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Tags Removidas'),
-                                    Text(
-                                        '${gadgetController.gadgetData.data.toString()}',
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                );
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Tags Removidas'),
+                                Text(
+                                    '${gadgetController.gadgetData.data.toString()}',
+                                    style: TextStyle(fontSize: 16)),
+                              ],
+                            );
                         }
                       }()
                     ],

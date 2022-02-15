@@ -6,6 +6,8 @@ import 'package:pipgesp/repository/utils/utils.dart';
 import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/services/utils/database_collections.dart';
+import 'package:pipgesp/ui/utils/gadget_devices.dart';
+import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class HomeRepository {
   late User user;
@@ -38,6 +40,38 @@ class HomeRepository {
       }
       debugPrint(user.uid);
       debugPrint(snapshot.get('uid'));
+      result.status = true;
+    } on FirebaseException catch (error) {
+      result.errorCode = error.code;
+      result.errorMessage = error.message;
+      result.status = false;
+      return result;
+    } catch (error) {
+      result.errorCode = "999";
+      result.errorMessage = error.toString();
+      result.status = false;
+      return result;
+    }
+
+    return result;
+  }
+
+  Future<Result> addGadget({required String identifier, required Gadget gadget}) async {
+    Result result = Result(status: false);
+
+    try {
+      Map<String, dynamic> param = {
+        "device": gadget.device.toValueString(),
+        "id": gadget.id,
+        "iotype": gadget.iotype.toValue(),
+        "name": gadget.name,
+        "physicalPort": gadget.physicalPort,
+      };
+      await FirestoreHandler.addOnArray(
+          identifier: identifier,
+          collection: DatabaseCollections.users,
+          field: "gadgets",
+          param: param);
       result.status = true;
     } on FirebaseException catch (error) {
       result.errorCode = error.code;

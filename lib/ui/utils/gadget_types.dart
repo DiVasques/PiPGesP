@@ -10,4 +10,14 @@ extension StringExtension on GadgetType {
         return 'Serial';
     }
   }
+  String toValue() {
+    switch (this) {
+      case GadgetType.input:
+        return 'input';
+      case GadgetType.output:
+        return 'output';
+      case GadgetType.serial:
+        return 'serial';
+    }
+  }
 }
