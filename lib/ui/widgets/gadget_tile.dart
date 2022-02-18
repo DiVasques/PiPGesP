@@ -39,7 +39,7 @@ class GadgetTile extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "Porta ${gadget.physicalPort} (${gadget.iotype.name})",
+                    "Porta ${gadget.physicalPort} (${gadget.iotype.translatedValue()})",
                     style: TextStyle(
                       color: AppColors.darkText,
                       fontSize: 12,
