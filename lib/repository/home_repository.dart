@@ -63,9 +63,9 @@ class HomeRepository {
 
     try {
       Map<String, dynamic> param = {
-        "device": gadget.device.toValueString(),
+        "device": gadget.device.name,
         "id": gadget.id,
-        "iotype": gadget.iotype.toValue(),
+        "iotype": gadget.iotype.name,
         "name": gadget.name,
         "physicalPort": gadget.physicalPort,
       };

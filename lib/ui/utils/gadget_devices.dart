@@ -1,13 +1,14 @@
 enum GadgetDevice { lamp, relay, thermometer }
+
 extension StringExtension on GadgetDevice {
-  String toValueString() {
+  String translatedValue() {
     switch (this) {
       case GadgetDevice.lamp:
-        return 'lamp';
+        return 'Lâmpada';
       case GadgetDevice.relay:
-        return 'relay';
+        return 'Relé';
       case GadgetDevice.thermometer:
-        return 'thermometer';
+        return 'Termômetro';
     }
   }
 }

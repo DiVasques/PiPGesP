@@ -17,33 +17,19 @@ class Utils {
     }
   }
 
-  static GadgetDevice processDevice(String device) {
-    switch (device) {
-      case 'lamp':
-        return GadgetDevice.lamp;
-      case 'relay':
-        return GadgetDevice.relay;
-      case 'thermometer':
-        return GadgetDevice.thermometer;
-
-      default:
-        return GadgetDevice.lamp;
-    }
+  static GadgetDevice processDevice(String deviceString) {
+    GadgetDevice gadgetDevice = GadgetDevice.values.firstWhere(
+      (device) => device.name == deviceString.toLowerCase(),
+      orElse: () => GadgetDevice.relay,
+    );
+    return gadgetDevice;
   }
 
-  static DataType processDataType(String dataType) {
-    switch (dataType) {
-      case 'bool':
-        return DataType.bool;
-      case 'string':
-        return DataType.string;
-      case 'map':
-        return DataType.map;
-      case 'int':
-        return DataType.int;
-
-      default:
-        return DataType.string;
-    }
+  static DataType processDataType(String dataTypeString) {
+    DataType dataType = DataType.values.firstWhere(
+      (type) => type.name == dataTypeString.toLowerCase(),
+      orElse: () => DataType.string,
+    );
+    return dataType;
   }
 }
