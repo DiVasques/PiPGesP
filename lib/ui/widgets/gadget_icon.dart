@@ -18,8 +18,8 @@ class GadgetIcon extends StatelessWidget {
             return Icons.lightbulb;
           case GadgetDevice.thermometer:
             return Icons.thermostat;
-          case GadgetDevice.decoupler:
-            return Icons.remove_moderator;
+          case GadgetDevice.relay:
+            return Icons.power_settings_new_rounded;
           default:
         }
       }(),

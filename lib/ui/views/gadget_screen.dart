@@ -130,52 +130,65 @@ class GadgetScreen extends StatelessWidget {
                               },
                             );
                           case GadgetType.input:
-                            switch (gadget.device) {
-                              case GadgetDevice.lamp:
-                                return Container(
-                                  height: 46,
-                                  color: Colors.grey,
-                                );
-                              case GadgetDevice.thermometer:
-                                return Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Temperatura'),
-                                        Text(
-                                            '${gadgetController.gadgetData.data.toString()}°C',
-                                            style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Última aquisição'),
-                                        Text(
-                                            '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
-                                            style: TextStyle(fontSize: 13)),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              case GadgetDevice.decoupler:
-                                return Container(
-                                  height: 46,
-                                  color: Colors.grey,
-                                );
-                            }
-                          case GadgetType.spi:
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            return Column(
                               children: [
-                                Text('Tags Removidas'),
-                                Text(
-                                    '${gadgetController.gadgetData.data.toString()}',
-                                    style: TextStyle(fontSize: 16)),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Status'),
+                                    Text(
+                                        '${processGadgetStatusText(gadgetController.gadgetData.data as bool)}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: (gadgetController
+                                                  .gadgetData.data as bool)
+                                              ? theme.primaryColor
+                                              : Colors.red,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Última atualização'),
+                                    Text(
+                                        '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
+                                        style: TextStyle(fontSize: 13)),
+                                  ],
+                                ),
+                              ],
+                            );
+                          case GadgetType.spi:
+                            return Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Temperatura'),
+                                    Text(
+                                        '${gadgetController.gadgetData.data.toString()}°C',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Última atualização'),
+                                    Text(
+                                        '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
+                                        style: TextStyle(fontSize: 13)),
+                                  ],
+                                ),
                               ],
                             );
                         }
@@ -195,5 +208,12 @@ class GadgetScreen extends StatelessWidget {
       return DateFormat(Utils.timeFormat).format(lastChange);
     }
     return DateFormat(Utils.dateFormat).format(lastChange);
+  }
+
+  String processGadgetStatusText(bool status) {
+    if (status) {
+      return "Ligado";
+    }
+    return "Desligado";
   }
 }

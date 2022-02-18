@@ -16,12 +16,14 @@ class GadgetServices {
     debugPrint(url.toString());
     switch (physicalPort) {
       case '999':
-        response = await rootBundle.loadString('assets/json/input_gadget.json');
-
+        response = await rootBundle.loadString('assets/json/spi_gadget.json');
         break;
       case '5':
         response =
             await rootBundle.loadString('assets/json/output_gadget.json');
+        break;
+      case '6':
+        response = await rootBundle.loadString('assets/json/input_gadget.json');
         break;
       default:
         throw (Exception('No Data!'));

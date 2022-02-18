@@ -1,7 +1,7 @@
 {
-    "string": "term",
+    "string": "relay",
     "iotype": "input",
-    "datatype": "int",
-    "data": 24.5,
+    "datatype": "bool",
+    "data": true,
     "last": 1645208009327
 }

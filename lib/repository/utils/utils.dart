@@ -21,8 +21,8 @@ class Utils {
     switch (device) {
       case 'lamp':
         return GadgetDevice.lamp;
-      case 'decoupler':
-        return GadgetDevice.decoupler;
+      case 'relay':
+        return GadgetDevice.relay;
       case 'thermometer':
         return GadgetDevice.thermometer;
 

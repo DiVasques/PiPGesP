@@ -25,13 +25,14 @@ class GadgetController extends BaseController {
   GadgetData get gadgetData => _gadgetRepository.gadgetData;
 
   Future<void> getGadgetData() async {
-    debugPrint(runtimeType.toString()+".state: getGadgetData");
+    debugPrint(runtimeType.toString() + ".state: getGadgetData");
     setState(ViewState.busy);
     Result result =
         await _gadgetRepository.getGadgetData(physicalPort: physicalPort);
 
     if (result.status) {
-      if (gadgetData.iotype == GadgetType.output &&
+      if ((gadgetData.iotype == GadgetType.output ||
+              gadgetData.iotype == GadgetType.input) &&
           gadgetData.dataType == DataType.bool) {
         outputFormValue = gadgetData.data as bool;
       }
@@ -43,7 +44,7 @@ class GadgetController extends BaseController {
   }
 
   Future<void> setGadgetOutput(bool value) async {
-    debugPrint(runtimeType.toString()+".state: setGadgetOutput");
+    debugPrint(runtimeType.toString() + ".state: setGadgetOutput");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.setGadgetOutput(
         physicalPort: physicalPort, output: value);
@@ -57,7 +58,7 @@ class GadgetController extends BaseController {
   }
 
   Future<bool> deleteGadget(String identifier, Gadget gadget) async {
-    debugPrint(runtimeType.toString()+".state: deleteGadget");
+    debugPrint(runtimeType.toString() + ".state: deleteGadget");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.deleteGadget(
         identifier: identifier, gadget: gadget);
