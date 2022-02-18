@@ -13,6 +13,7 @@ class HomeRepository {
   late User user;
 
   Future<Result> getUser({required String email}) async {
+    debugPrint("state: repository");
     Result result = Result(status: false);
 
     try {
@@ -57,6 +58,7 @@ class HomeRepository {
   }
 
   Future<Result> addGadget({required String identifier, required Gadget gadget}) async {
+    debugPrint("state: repository");
     Result result = Result(status: false);
 
     try {

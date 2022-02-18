@@ -92,6 +92,7 @@ class LoginController extends BaseController {
   }
 
   Future<Result> handleSignInSignUp() async {
+    debugPrint(runtimeType.toString()+".state: handleSignInSignUp");
     if (_validateAndSaveFields()) {
       // set view as busy, so it shows a loading indicator
       setState(ViewState.busy);
@@ -130,10 +131,12 @@ class LoginController extends BaseController {
   }
 
   Future<void> resendVerificationEmail() async {
+    debugPrint(runtimeType.toString()+".state: resendVerificationEmail");
     await AuthenticationServices.sendVerificationEmail(email: _email!, password: _password!);
   }
 
   Future<Result> resetPassword() async {
+    debugPrint(runtimeType.toString()+".state: resetPassword");
     if (_validateAndSaveFields()) {
       setState(ViewState.busy);
       Result result = await AuthenticationServices.resetPassword(

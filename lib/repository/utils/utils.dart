@@ -9,8 +9,8 @@ class Utils {
         return GadgetType.input;
       case 'output':
         return GadgetType.output;
-      case 'serial':
-        return GadgetType.serial;
+      case 'spi':
+        return GadgetType.spi;
 
       default:
         return GadgetType.input;
@@ -39,8 +39,8 @@ class Utils {
         return DataType.string;
       case 'map':
         return DataType.map;
-      case 'float':
-        return DataType.float;
+      case 'int':
+        return DataType.int;
 
       default:
         return DataType.string;

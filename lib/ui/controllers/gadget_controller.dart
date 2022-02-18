@@ -1,4 +1,5 @@
 // base_model.dart
+import 'package:flutter/foundation.dart';
 import 'package:pipgesp/repository/gadget_repository.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/gadget_data.dart';
@@ -24,6 +25,7 @@ class GadgetController extends BaseController {
   GadgetData get gadgetData => _gadgetRepository.gadgetData;
 
   Future<void> getGadgetData() async {
+    debugPrint(runtimeType.toString()+".state: getGadgetData");
     setState(ViewState.busy);
     Result result =
         await _gadgetRepository.getGadgetData(physicalPort: physicalPort);
@@ -41,6 +43,7 @@ class GadgetController extends BaseController {
   }
 
   Future<void> setGadgetOutput(bool value) async {
+    debugPrint(runtimeType.toString()+".state: setGadgetOutput");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.setGadgetOutput(
         physicalPort: physicalPort, output: value);
@@ -54,6 +57,7 @@ class GadgetController extends BaseController {
   }
 
   Future<bool> deleteGadget(String identifier, Gadget gadget) async {
+    debugPrint(runtimeType.toString()+".state: deleteGadget");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.deleteGadget(
         identifier: identifier, gadget: gadget);

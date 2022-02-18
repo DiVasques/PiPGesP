@@ -151,7 +151,7 @@ class GadgetScreen extends StatelessWidget {
                                   color: Colors.grey,
                                 );
                             }
-                          case GadgetType.serial:
+                          case GadgetType.spi:
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

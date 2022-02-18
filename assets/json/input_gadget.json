@@ -1,7 +1,7 @@
 {
     "string": "term",
     "iotype": "input",
-    "datatype": "float",
+    "datatype": "int",
     "data": 24.5,
     "last": 1626472231
 }

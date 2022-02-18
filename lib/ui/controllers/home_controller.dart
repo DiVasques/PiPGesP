@@ -1,4 +1,5 @@
 // base_model.dart
+import 'package:flutter/foundation.dart';
 import 'package:pipgesp/repository/home_repository.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/user.dart';
@@ -17,6 +18,7 @@ class HomeController extends BaseController {
   User get user => _homeRepository.user;
 
   Future<void> getUser() async {
+    debugPrint(runtimeType.toString()+".state: getUser");
     setState(ViewState.busy);
     Result result = await _homeRepository.getUser(email: email);
 
@@ -29,6 +31,7 @@ class HomeController extends BaseController {
   }
 
   Future<bool> addGadget() async {
+    debugPrint(runtimeType.toString()+".state: addGadget");
     setState(ViewState.busy);
     Gadget gadget = Gadget(
         device: GadgetDevice.lamp,

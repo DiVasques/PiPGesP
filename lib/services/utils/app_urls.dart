@@ -1,3 +1,3 @@
 class AppUrls {
-  static String raspberryEndpoint = 'http://localhost:9090/';
+  static String raspberryEndpoint = '192.168.137.2:8080';
 }

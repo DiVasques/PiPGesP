@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class FirestoreHandler {
   ///Retorna documento [QuerySnapshot] da coleção selecionada
@@ -6,6 +7,7 @@ class FirestoreHandler {
     required String identifier,
     required String collection,
   }) async {
+    debugPrint("state: services");
     DocumentSnapshot document = await FirebaseFirestore.instance
         .collection(collection)
         .doc(identifier)
@@ -19,6 +21,7 @@ class FirestoreHandler {
     required String collection,
     required Map<String, dynamic> params,
   }) async {
+    debugPrint("state: services");
     await FirebaseFirestore.instance
         .collection(collection)
         .doc(identifier)
@@ -32,6 +35,7 @@ class FirestoreHandler {
     required String field,
     required dynamic param,
   }) async {
+    debugPrint("state: services");
     await FirebaseFirestore.instance
         .collection(collection)
         .doc(identifier)
@@ -47,6 +51,7 @@ class FirestoreHandler {
     required String field,
     required dynamic param,
   }) async {
+    debugPrint("state: services");
     await FirebaseFirestore.instance
         .collection(collection)
         .doc(identifier)

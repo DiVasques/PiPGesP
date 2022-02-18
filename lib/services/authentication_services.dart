@@ -42,6 +42,7 @@ class AuthenticationServices {
     required String email,
     required String password,
   }) async {
+    debugPrint("state: services");
     Result authResult = Result(status: false);
 
     debugPrint("Email: $email");
@@ -100,6 +101,7 @@ class AuthenticationServices {
   }
 
   static Future<Result> emailSingIn(String? email, String? password) async {
+    debugPrint("state: services");
     Result authResult = Result(status: false);
 
     debugPrint("Email: $email");
@@ -143,11 +145,13 @@ class AuthenticationServices {
   }
 
   static Future<void> userLogout() async {
+    debugPrint("state: services");
     await firebase_auth.FirebaseAuth.instance.signOut();
   }
 
   static Future<Result> sendVerificationEmail(
       {required String email, required String password}) async {
+    debugPrint("state: services");
     Result authResult = Result(status: false);
     try {
       firebase_auth.User? user =
@@ -177,6 +181,7 @@ class AuthenticationServices {
   }
 
   static Future<Result> resetPassword({required String email}) async {
+    debugPrint("state: services");
     Result authResult = Result(status: false);
     try {
       await firebase_auth.FirebaseAuth.instance

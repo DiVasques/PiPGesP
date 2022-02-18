@@ -1,4 +1,4 @@
-enum GadgetType { input, output, serial }
+enum GadgetType { input, output, spi }
 extension StringExtension on GadgetType {
   String toValueString() {
     switch (this) {
@@ -6,8 +6,8 @@ extension StringExtension on GadgetType {
         return 'Entrada';
       case GadgetType.output:
         return 'Saída';
-      case GadgetType.serial:
-        return 'Serial';
+      case GadgetType.spi:
+        return 'SPI';
     }
   }
   String toValue() {
@@ -16,8 +16,8 @@ extension StringExtension on GadgetType {
         return 'input';
       case GadgetType.output:
         return 'output';
-      case GadgetType.serial:
-        return 'serial';
+      case GadgetType.spi:
+        return 'spi';
     }
   }
 }
