@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/gadget_controller.dart';
@@ -6,6 +7,7 @@ import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
 import 'package:pipgesp/ui/utils/gadget_devices.dart';
 import 'package:pipgesp/ui/utils/gadget_types.dart';
+import 'package:pipgesp/ui/utils/utils.dart';
 import 'package:pipgesp/ui/widgets/gadget_icon.dart';
 import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:pipgesp/utils/string_capitalize.dart';
@@ -135,14 +137,29 @@ class GadgetScreen extends StatelessWidget {
                                   color: Colors.grey,
                                 );
                               case GadgetDevice.thermometer:
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                return Column(
                                   children: [
-                                    Text('Temperatura'),
-                                    Text(
-                                        '${gadgetController.gadgetData.data.toString()}°C',
-                                        style: TextStyle(fontSize: 16)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Temperatura'),
+                                        Text(
+                                            '${gadgetController.gadgetData.data.toString()}°C',
+                                            style: TextStyle(fontSize: 16)),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Última aquisição'),
+                                        Text(
+                                            '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
+                                            style: TextStyle(fontSize: 13)),
+                                      ],
+                                    ),
                                   ],
                                 );
                               case GadgetDevice.decoupler:
@@ -171,5 +188,12 @@ class GadgetScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String processLastChangedDate(DateTime lastChange) {
+    if (lastChange.day == DateTime.now().day) {
+      return DateFormat(Utils.timeFormat).format(lastChange);
+    }
+    return DateFormat(Utils.dateFormat).format(lastChange);
   }
 }
