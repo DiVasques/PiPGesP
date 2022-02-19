@@ -152,7 +152,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                             (GadgetType type) {
                                       return DropdownMenuItem<String>(
                                         value: type.name,
-                                        child: Text(type.name),
+                                        child: Text(type.translatedValue()),
                                       );
                                     }).toList(),
                                   ),
@@ -202,7 +202,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(device.name),
+                                                  Text(device.translatedValue()),
                                                   GadgetIcon(
                                                     device: device,
                                                   )
@@ -221,7 +221,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(device.name),
+                                                  Text(device.translatedValue()),
                                                   GadgetIcon(
                                                     device: device,
                                                   )
@@ -240,7 +240,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(device.name),
+                                                  Text(device.translatedValue()),
                                                   GadgetIcon(
                                                     device: device,
                                                   )
