@@ -29,24 +29,4 @@ class HomeController extends BaseController {
       setState(ViewState.error);
     }
   }
-
-  Future<bool> addGadget() async {
-    debugPrint(runtimeType.toString()+".state: addGadget");
-    setState(ViewState.busy);
-    Gadget gadget = Gadget(
-        device: GadgetDevice.lamp,
-        iotype: GadgetType.output,
-        name: "lâmpada sala",
-        physicalPort: 5,
-        id: 'adadafafaf');
-    Result result =
-        await _homeRepository.addGadget(identifier: user.email, gadget: gadget);
-    if (result.status) {
-      await getUser();
-    } else {
-      setErrorMessage(result.errorMessage!);
-      setState(ViewState.error);
-    }
-    return result.status;
-  }
 }

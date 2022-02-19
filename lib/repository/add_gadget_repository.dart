@@ -20,6 +20,7 @@ class AddGadgetRepository {
         datatype: gadget.iotype == GadgetType.spi ? 'int' : 'bool',
         iotype: gadget.iotype.name,
       );
+      debugPrint("state: added on server");
 
       Map<String, dynamic> param = {
         "device": gadget.device.name,
@@ -33,6 +34,7 @@ class AddGadgetRepository {
           collection: DatabaseCollections.users,
           field: "gadgets",
           param: param);
+      debugPrint("state: added on firestore");
 
       result.status = true;
     } on FirebaseException catch (error) {

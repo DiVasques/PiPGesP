@@ -104,6 +104,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                   hintText: 'Nome do Dispositivo',
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.next,
+                                  initValue: addGadgetController.name ?? '',
                                   validator: FieldValidators.validateName,
                                   onSaved: (value) =>
                                       addGadgetController.name = value,
@@ -202,7 +203,8 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(device.translatedValue()),
+                                                  Text(
+                                                      device.translatedValue()),
                                                   GadgetIcon(
                                                     device: device,
                                                   )
@@ -221,7 +223,8 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(device.translatedValue()),
+                                                  Text(
+                                                      device.translatedValue()),
                                                   GadgetIcon(
                                                     device: device,
                                                   )
@@ -240,7 +243,8 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(device.translatedValue()),
+                                                  Text(
+                                                      device.translatedValue()),
                                                   GadgetIcon(
                                                     device: device,
                                                   )
@@ -324,6 +328,15 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                   GenericRouter.homeRoute,
                                   (route) => false,
                                   arguments: addGadgetController.user.email,
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 2),
+                                    content: Text(
+                                        'Erro. Tente novamente mais tarde'),
+                                  ),
                                 );
                               }
                             }

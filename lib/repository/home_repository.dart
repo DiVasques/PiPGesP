@@ -56,37 +56,4 @@ class HomeRepository {
 
     return result;
   }
-
-  Future<Result> addGadget({required String identifier, required Gadget gadget}) async {
-    debugPrint("state: repository");
-    Result result = Result(status: false);
-
-    try {
-      Map<String, dynamic> param = {
-        "device": gadget.device.name,
-        "id": gadget.id,
-        "iotype": gadget.iotype.name,
-        "name": gadget.name,
-        "physicalPort": gadget.physicalPort,
-      };
-      await FirestoreHandler.addOnArray(
-          identifier: identifier,
-          collection: DatabaseCollections.users,
-          field: "gadgets",
-          param: param);
-      result.status = true;
-    } on FirebaseException catch (error) {
-      result.errorCode = error.code;
-      result.errorMessage = error.message;
-      result.status = false;
-      return result;
-    } catch (error) {
-      result.errorCode = "999";
-      result.errorMessage = error.toString();
-      result.status = false;
-      return result;
-    }
-
-    return result;
-  }
 }

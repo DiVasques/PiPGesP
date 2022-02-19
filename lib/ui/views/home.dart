@@ -25,7 +25,6 @@ class Home extends StatelessWidget {
               backgroundColor: theme.primaryColor,
               tooltip: "Adicionar Dispositivo",
               onPressed: () {
-                homeController.addGadget();
                 Navigator.pushNamed(
                   context,
                   GenericRouter.addGadgetRoute,

@@ -45,7 +45,7 @@ class FieldValidators {
 
   static String? validateName(String? input) {
     input!.trim();
-    RegExp validRegistrationPattern = RegExp(r"^[a-zA-Z0-9]+$");
+    RegExp validRegistrationPattern = RegExp(r"^[a-zA-Z0-9 À-ÿ]+$");
     if (validRegistrationPattern.hasMatch(input) && input.length <= 20) {
       return null;
     } else {

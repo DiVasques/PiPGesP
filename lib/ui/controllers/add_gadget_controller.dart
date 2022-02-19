@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pipgesp/repository/add_gadget_repository.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/user.dart';
+import 'package:pipgesp/repository/utils/utils.dart';
+import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/utils/device_options.dart';
 import 'package:pipgesp/ui/utils/gadget_types.dart';
+import 'package:uuid/uuid.dart';
 
 class AddGadgetController extends BaseController {
   final User user;
@@ -77,11 +80,22 @@ class AddGadgetController extends BaseController {
   Future<bool?> addGadget() async {
     debugPrint(runtimeType.toString() + ".state: addGadget");
     if (_validateAndSaveFields()) {
-      debugPrint(runtimeType.toString() + ".state: addGadget validated");
       setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 2));
+      Uuid uuid = Uuid();
+      String uid = uuid.v4();
+      Gadget gadget = Gadget(
+        device: Utils.processDevice(_gadgetDevice!),
+        iotype: Utils.processIOType(_gadgetType!),
+        name: _name!,
+        physicalPort: int.parse(_physicalPort!),
+        id: uid,
+      );
+      Result result = await _addGadgetRepository.addGadget(
+        identifier: user.email,
+        gadget: gadget,
+      );
       setState(ViewState.idle);
-      return true;
+      return result.status;
     }
     return null;
   }
