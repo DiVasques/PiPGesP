@@ -119,175 +119,193 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
-                                child: InputDecorator(
-                                  decoration: InputDecoration(
-                                    labelText: 'Tipo de IO',
-                                    focusColor: theme.primaryColor,
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                        20.0, 15.0, 20.0, 15.0),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    errorStyle: const TextStyle(fontSize: 11.0),
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButtonFormField<String>(
-                                      validator:
-                                          FieldValidators.validateNotEmpty,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButtonFormField<String>(
+                                    decoration: InputDecoration(
+                                      labelText: 'Tipo de IO',
                                       focusColor: theme.primaryColor,
-                                      focusNode: _iotypeFocus,
-                                      isDense: true,
-                                      value: addGadgetController.gadgetType,
-                                      onChanged: (value) {
-                                        addGadgetController.gadgetType = value;
-                                        addGadgetController.gadgetDevice = null;
-                                        addGadgetController.physicalPort = null;
-                                      },
-                                      items: GadgetType.values
-                                          .map<DropdownMenuItem<String>>(
-                                              (GadgetType type) {
-                                        return DropdownMenuItem<String>(
-                                          value: type.name,
-                                          child: Text(type.name),
-                                        );
-                                      }).toList(),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20.0, 15.0, 20.0, 15.0),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      errorStyle:
+                                          const TextStyle(fontSize: 11.0),
                                     ),
+                                    validator: FieldValidators.validateNotEmpty,
+                                    focusColor: theme.primaryColor,
+                                    focusNode: _iotypeFocus,
+                                    isDense: true,
+                                    value: addGadgetController.gadgetType,
+                                    onChanged: (value) {
+                                      addGadgetController.gadgetType = value;
+                                      addGadgetController.gadgetDevice = null;
+                                      addGadgetController.physicalPort = null;
+                                      FocusScope.of(context).unfocus();
+                                      FocusScope.of(context)
+                                          .requestFocus(_deviceFocus);
+                                    },
+                                    items: GadgetType.values
+                                        .map<DropdownMenuItem<String>>(
+                                            (GadgetType type) {
+                                      return DropdownMenuItem<String>(
+                                        value: type.name,
+                                        child: Text(type.name),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
-                                child: InputDecorator(
-                                  decoration: InputDecoration(
-                                    labelText: 'Tipo de Dispositivo',
-                                    focusColor: theme.primaryColor,
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                        20.0, 15.0, 20.0, 15.0),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    errorStyle: const TextStyle(fontSize: 11.0),
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButtonFormField<String>(
-                                      validator:
-                                          FieldValidators.validateNotEmpty,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButtonFormField<String>(
+                                    isExpanded: true,
+                                    decoration: InputDecoration(
+                                      labelText: 'Tipo de Dispositivo',
                                       focusColor: theme.primaryColor,
-                                      focusNode: _deviceFocus,
-                                      isDense: true,
-                                      hint: Text('Escolha um tipo'),
-                                      value: addGadgetController.gadgetDevice,
-                                      onChanged: (value) => addGadgetController
-                                          .gadgetDevice = value,
-                                      items: () {
-                                        switch (
-                                            addGadgetController.gadgetType) {
-                                          case 'input':
-                                            return DeviceOptions.inputOptions
-                                                .map<DropdownMenuItem<String>>(
-                                                    (GadgetDevice device) {
-                                              return DropdownMenuItem<String>(
-                                                value: device.name,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(device.name),
-                                                    GadgetIcon(
-                                                      device: device,
-                                                      color:
-                                                          AppColors.defaultGrey,
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            }).toList();
-                                          case 'output':
-                                            return DeviceOptions.outputOptions
-                                                .map<DropdownMenuItem<String>>(
-                                                    (GadgetDevice device) {
-                                              return DropdownMenuItem<String>(
-                                                value: device.name,
-                                                child: Text(device.name),
-                                              );
-                                            }).toList();
-                                          case 'spi':
-                                            return DeviceOptions.spiOptions
-                                                .map<DropdownMenuItem<String>>(
-                                                    (GadgetDevice device) {
-                                              return DropdownMenuItem<String>(
-                                                value: device.name,
-                                                child: Text(device.name),
-                                              );
-                                            }).toList();
-                                        }
-                                      }(),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20.0, 15.0, 20.0, 15.0),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      errorStyle:
+                                          const TextStyle(fontSize: 11.0),
                                     ),
+                                    validator: FieldValidators.validateNotEmpty,
+                                    focusColor: theme.primaryColor,
+                                    focusNode: _deviceFocus,
+                                    isDense: true,
+                                    hint: Text('Escolha um tipo'),
+                                    value: addGadgetController.gadgetDevice,
+                                    onChanged: (value) {
+                                      addGadgetController.gadgetDevice = value;
+                                      FocusScope.of(context).unfocus();
+                                      FocusScope.of(context)
+                                          .requestFocus(_physicalPortFocus);
+                                    },
+                                    items: () {
+                                      switch (addGadgetController.gadgetType) {
+                                        case 'input':
+                                          return DeviceOptions.inputOptions
+                                              .map<DropdownMenuItem<String>>(
+                                                  (GadgetDevice device) {
+                                            return DropdownMenuItem<String>(
+                                              value: device.name,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(device.name),
+                                                  GadgetIcon(
+                                                    device: device,
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }).toList();
+                                        case 'output':
+                                          return DeviceOptions.outputOptions
+                                              .map<DropdownMenuItem<String>>(
+                                                  (GadgetDevice device) {
+                                            return DropdownMenuItem<String>(
+                                              value: device.name,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(device.name),
+                                                  GadgetIcon(
+                                                    device: device,
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }).toList();
+                                        case 'spi':
+                                          return DeviceOptions.spiOptions
+                                              .map<DropdownMenuItem<String>>(
+                                                  (GadgetDevice device) {
+                                            return DropdownMenuItem<String>(
+                                              value: device.name,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(device.name),
+                                                  GadgetIcon(
+                                                    device: device,
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }).toList();
+                                      }
+                                    }(),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
-                                child: InputDecorator(
-                                  decoration: InputDecoration(
-                                    labelText: 'Porta Física',
-                                    focusColor: theme.primaryColor,
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                        20.0, 15.0, 20.0, 15.0),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    errorStyle: const TextStyle(fontSize: 11.0),
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButtonFormField<String>(
-                                      validator:
-                                          FieldValidators.validateNotEmpty,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButtonFormField<String>(
+                                    decoration: InputDecoration(
+                                      labelText: 'Porta Física',
                                       focusColor: theme.primaryColor,
-                                      focusNode: _physicalPortFocus,
-                                      isDense: true,
-                                      disabledHint:
-                                          Text('Não há portas disponíveis'),
-                                      hint: Text('Escolha uma porta'),
-                                      value: addGadgetController.physicalPort,
-                                      onChanged: (value) => addGadgetController
-                                          .physicalPort = value,
-                                      items: () {
-                                        switch (
-                                            addGadgetController.gadgetType) {
-                                          case 'input':
-                                          case 'output':
-                                            return addGadgetController
-                                                .availableIOPorts()
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String port) {
-                                              return DropdownMenuItem<String>(
-                                                value: port,
-                                                child: Text(port),
-                                              );
-                                            }).toList();
-                                          case 'spi':
-                                            return addGadgetController
-                                                .availableSPIPorts()
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String port) {
-                                              return DropdownMenuItem<String>(
-                                                value: port,
-                                                child: Text(port),
-                                              );
-                                            }).toList();
-                                        }
-                                      }(),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20.0, 15.0, 20.0, 15.0),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      errorStyle:
+                                          const TextStyle(fontSize: 11.0),
                                     ),
+                                    validator: FieldValidators.validateNotEmpty,
+                                    focusColor: theme.primaryColor,
+                                    focusNode: _physicalPortFocus,
+                                    isDense: true,
+                                    disabledHint:
+                                        Text('Não há portas disponíveis'),
+                                    hint: Text('Escolha uma porta'),
+                                    value: addGadgetController.physicalPort,
+                                    onChanged: (value) => addGadgetController
+                                        .physicalPort = value,
+                                    items: () {
+                                      switch (addGadgetController.gadgetType) {
+                                        case 'input':
+                                        case 'output':
+                                          return addGadgetController
+                                              .availableIOPorts()
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String port) {
+                                            return DropdownMenuItem<String>(
+                                              value: port,
+                                              child: Text(port),
+                                            );
+                                          }).toList();
+                                        case 'spi':
+                                          return addGadgetController
+                                              .availableSPIPorts()
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String port) {
+                                            return DropdownMenuItem<String>(
+                                              value: port,
+                                              child: Text(port),
+                                            );
+                                          }).toList();
+                                      }
+                                    }(),
                                   ),
                                 ),
                               ),
