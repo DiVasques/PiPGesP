@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/user.dart';
 import 'package:pipgesp/ui/controllers/add_gadget_controller.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
-import 'package:pipgesp/ui/controllers/gadget_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
 import 'package:pipgesp/ui/utils/device_options.dart';

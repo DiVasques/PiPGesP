@@ -1,12 +1,9 @@
 // base_model.dart
 import 'package:flutter/foundation.dart';
 import 'package:pipgesp/repository/home_repository.dart';
-import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/repository/models/user.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
-import 'package:pipgesp/ui/utils/gadget_devices.dart';
-import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class HomeController extends BaseController {
   final String email;

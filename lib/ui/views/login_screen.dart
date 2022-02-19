@@ -56,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 

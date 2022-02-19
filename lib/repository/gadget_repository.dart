@@ -7,8 +7,6 @@ import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/gadget_services.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/services/utils/database_collections.dart';
-import 'package:pipgesp/ui/utils/gadget_devices.dart';
-import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class GadgetRepository {
   late GadgetData gadgetData;

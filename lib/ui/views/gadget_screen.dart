@@ -5,7 +5,6 @@ import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/gadget_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
-import 'package:pipgesp/ui/utils/gadget_devices.dart';
 import 'package:pipgesp/ui/utils/gadget_types.dart';
 import 'package:pipgesp/ui/utils/utils.dart';
 import 'package:pipgesp/ui/widgets/gadget_icon.dart';

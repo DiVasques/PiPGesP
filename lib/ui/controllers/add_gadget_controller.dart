@@ -6,7 +6,6 @@ import 'package:pipgesp/repository/utils/utils.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/utils/device_options.dart';
-import 'package:pipgesp/ui/utils/gadget_types.dart';
 import 'package:uuid/uuid.dart';
 
 class AddGadgetController extends BaseController {
@@ -18,7 +17,6 @@ class AddGadgetController extends BaseController {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   GlobalKey<FormState> get formKey => _formKey;
 
-  late String _uid;
   String? _name;
   String? _gadgetType = 'input';
   String? _gadgetDevice;
