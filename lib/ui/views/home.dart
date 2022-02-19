@@ -69,11 +69,18 @@ class Home extends StatelessWidget {
                       children: [
                         Text(
                           'Error',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                            color: AppColors.defaultGrey,
+                            fontSize: 20,
+                          ),
                         ),
                         Text(
                           homeController.errorMessage,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.defaultGrey,
+                            fontSize: 20,
+                          ),
                         ),
                         IconButton(
                           icon: const Icon(
@@ -81,7 +88,7 @@ class Home extends StatelessWidget {
                             size: 30,
                           ),
                           onPressed: () => homeController.getUser(),
-                          color: Colors.white,
+                          color: AppColors.defaultGrey,
                         ),
                       ],
                     ),

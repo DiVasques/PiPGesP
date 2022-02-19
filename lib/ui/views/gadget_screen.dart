@@ -55,6 +55,7 @@ class GadgetScreen extends StatelessWidget {
                         ),
                         Text(
                           gadgetController.errorMessage,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               color: AppColors.defaultGrey, fontSize: 20),
                         ),
