@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DefaultTextField extends StatefulWidget {
   final bool obscureText;
   final Color backgroundColor;
-  final String hintText;
+  final String labelText;
   final FocusNode focusNode;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -16,7 +16,7 @@ class DefaultTextField extends StatefulWidget {
       {Key? key,
       this.obscureText = false,
       this.backgroundColor = Colors.white,
-      required this.hintText,
+      required this.labelText,
       required this.focusNode,
       this.keyboardType = TextInputType.text,
       this.textInputAction = TextInputAction.next,
@@ -42,7 +42,7 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
     return TextFormField(
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        labelText: widget.hintText,
+        labelText: widget.labelText,
         fillColor: widget.backgroundColor,
         filled: true,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),

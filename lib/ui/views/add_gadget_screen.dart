@@ -99,7 +99,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
                                 child: DefaultTextField(
-                                  hintText: 'Nome do Dispositivo',
+                                  labelText: 'Nome do Dispositivo',
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.next,
                                   initValue: addGadgetController.name ?? '',

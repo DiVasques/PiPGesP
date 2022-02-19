@@ -185,16 +185,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     padding:
                                                         const EdgeInsets.only(
                                                             right: 8),
-                                                    child: FlatButton(
-                                                        textColor: Theme.of(context).primaryColor,
+                                                    child: TextButton(
                                                         onPressed: () {
                                                           loginController
                                                                   .loginState =
                                                               LoginState
                                                                   .forgotPassword;
                                                         },
-                                                        child: const Text(
+                                                        child: Text(
                                                             "Esqueceu sua Senha?",
+                                                            style: TextStyle(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
                                                             textAlign:
                                                                 TextAlign.end)),
                                                   ),
@@ -249,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: DefaultTextField(
-          hintText: 'Email',
+          labelText: 'Email',
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           validator: FieldValidators.validateEmail,
@@ -268,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: DefaultTextField(
           obscureText: true,
-          hintText: 'Senha',
+          labelText: 'Senha',
           keyboardType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.done,
           validator: FieldValidators.validatePwd,
@@ -292,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: DefaultTextField(
-          hintText: 'Nome',
+          labelText: 'Nome',
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           onSaved: (value) => loginController.name = value,
@@ -308,7 +311,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: DefaultTextField(
-          hintText: 'Email',
+          labelText: 'Email',
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           validator: FieldValidators.validateEmail,
@@ -325,7 +328,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: DefaultTextField(
-          hintText: 'DRE',
+          labelText: 'DRE',
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
           validator: FieldValidators.validateRegistration,
@@ -343,7 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: TextFormField(
           style: style,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
           obscureText: true,
           focusNode: _passwordFocus,
           onFieldSubmitted: (_) {
@@ -355,7 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onSaved: (value) => loginController.password = value,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: 'Senha',
+            labelText: 'Senha',
             fillColor: Colors.white,
             filled: true,
             border:
@@ -369,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: TextFormField(
           style: style,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
           obscureText: true,
           focusNode: _confirmPasswordFocus,
           controller: _confirmPass,
@@ -387,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: 'Confirmar Senha',
+            labelText: 'Confirmar Senha',
             fillColor: Colors.white,
             filled: true,
             border:
@@ -405,7 +408,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: TextFormField(
             style: style,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.start,
             focusNode: _resetPasswordFocus,
             onFieldSubmitted: (_) {
               FocusScope.of(context).unfocus();
@@ -415,7 +418,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onSaved: (value) => loginController.resetPasswordEmail = value,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: 'Email',
+              labelText: 'Email',
               fillColor: Colors.white,
               filled: true,
               border:
@@ -463,7 +466,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     : loginController.loginState == LoginState.signUp
                         ? "Cadastrar"
                         : "Enviar Email",
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -476,25 +479,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
-      ),
-    );
-
-    Material newAccButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(8.0),
-      color: Colors.grey[600],
-      child: MaterialButton(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        onPressed: () async {
-          FocusScope.of(context).unfocus();
-          loginController.loginState = LoginState.signUp;
-        },
-        child: const Text("Criar Nova Conta",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
       ),
     );
 
@@ -521,13 +505,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
-              FlatButton(
-                  textColor: Theme.of(context).primaryColor,
-                  onPressed: () async {
-                    FocusScope.of(context).unfocus();
-                    loginController.loginState = LoginState.signUp;
-                  },
-                  child: const Text("Inscreva-se", textAlign: TextAlign.left)),
+              TextButton(
+                onPressed: () async {
+                  FocusScope.of(context).unfocus();
+                  loginController.loginState = LoginState.signUp;
+                },
+                child: Text(
+                  "Inscreva-se",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ),
             ],
           ),
         ),
@@ -601,9 +589,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Siga as instruções contidas no email enviado para o endereço ${loginController.resetPasswordEmail} para redefinir sua senha.",
               ),
               actions: <Widget>[
-                // define os botões na base do dialogo
-                FlatButton(
-                  child: const Text("Ok"),
+                TextButton(
+                  child: Text(
+                    "Ok",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -624,8 +614,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   : const Text(
                       "Ocorreu um erro na operação. Tente novamente mais tarde."),
               actions: <Widget>[
-                FlatButton(
-                  child: const Text("Ok"),
+                TextButton(
+                  child: Text(
+                    "Ok",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -657,7 +650,7 @@ class _LoginScreenState extends State<LoginScreen> {
             content: const Text("Alert Dialog body"),
             actions: <Widget>[
               // define os botões na base do dialogo
-              FlatButton(
+              TextButton(
                 child: const Text("Fechar"),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -670,19 +663,20 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  Widget _buildErrorDialog(BuildContext context,
-      LoginController loginController, Result result) {
+  Widget _buildErrorDialog(
+      BuildContext context, LoginController loginController, Result result) {
     List<Widget> buttons = [];
     String? message = '';
 
-    if (result.errorCode == 'ERROR_EMAIL_NOT_VERIFIED' || result.errorCode == ERROR_EMAIL_ALREADY_USE) {
+    if (result.errorCode == 'ERROR_EMAIL_NOT_VERIFIED' ||
+        result.errorCode == ERROR_EMAIL_ALREADY_USE) {
       if (result.errorCode == ERROR_EMAIL_ALREADY_USE) {
         message = 'Email já registrado. ';
       }
       message +=
           'Acesse o link enviado para o email cadastrado para confirmar sua conta.';
       buttons.add(
-        FlatButton(
+        TextButton(
           child: const Text("Reenviar"),
           onPressed: () async {
             await loginController.resendVerificationEmail();
@@ -698,7 +692,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     buttons.add(
-      FlatButton(
+      TextButton(
         child: const Text("Fechar"),
         onPressed: () {
           Navigator.of(context).pop();
