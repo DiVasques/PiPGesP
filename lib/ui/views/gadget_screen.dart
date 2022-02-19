@@ -11,6 +11,7 @@ import 'package:pipgesp/ui/widgets/gadget_icon.dart';
 import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:pipgesp/utils/string_capitalize.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class GadgetScreen extends StatelessWidget {
   final Gadget gadget;
@@ -71,129 +72,151 @@ class GadgetScreen extends StatelessWidget {
                     ),
                   );
                 case ViewState.idle:
-                  return ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${gadget.name.toTitleCase()}',
-                              style: TextStyle(
-                                color: AppColors.darkText,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.start,
+                  RefreshController _refreshController =
+                      RefreshController(initialRefresh: false);
+
+                  void _onRefresh() async {
+                    await gadgetController.getGadgetData();
+                    _refreshController.refreshCompleted();
+                  }
+
+                  void _onLoading() async {
+                    await gadgetController.getGadgetData();
+                    _refreshController.loadComplete();
+                  }
+
+                  return SmartRefresher(
+                    controller: _refreshController,
+                    enablePullDown: true,
+                    onRefresh: _onRefresh,
+                    onLoading: _onLoading,
+                    header: WaterDropHeader(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${gadget.name.toTitleCase()}',
+                                  style: TextStyle(
+                                    color: AppColors.darkText,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    gadgetController
+                                        .deleteGadget(identifier, gadget)
+                                        .then((bool result) {
+                                      if (result) {
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            GenericRouter.homeRoute,
+                                            (route) => false,
+                                            arguments: identifier);
+                                      }
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: AppColors.defaultGrey,
+                                  ),
+                                )
+                              ],
                             ),
-                            IconButton(
-                              onPressed: () {
-                                gadgetController
-                                    .deleteGadget(identifier, gadget)
-                                    .then((bool result) {
-                                  if (result) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        GenericRouter.homeRoute,
-                                        (route) => false,
-                                        arguments: identifier);
-                                  }
-                                });
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: AppColors.defaultGrey,
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 15),
+                          GadgetIcon(
+                            device: gadget.device,
+                            size: 80,
+                            color: gadgetController.outputFormValue
+                                ? theme.primaryColor
+                                : null,
+                          ),
+                          SizedBox(height: 15),
+                          () {
+                            switch (gadget.iotype) {
+                              case GadgetType.output:
+                                return SwitchListTile(
+                                  title: Text('Ativar/Desativar'),
+                                  value: gadgetController.outputFormValue,
+                                  onChanged: (value) {
+                                    gadgetController.setGadgetOutput(value);
+                                  },
+                                );
+                              case GadgetType.input:
+                                return Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Status'),
+                                        Text(
+                                            '${processGadgetStatusText(gadgetController.gadgetData.data as bool)}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: (gadgetController
+                                                      .gadgetData.data as bool)
+                                                  ? theme.primaryColor
+                                                  : Colors.red,
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Última atualização'),
+                                        Text(
+                                            '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
+                                            style: TextStyle(fontSize: 13)),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              case GadgetType.spi:
+                                return Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Temperatura'),
+                                        Text(
+                                            '${gadgetController.gadgetData.data.toString()}°C',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Última atualização'),
+                                        Text(
+                                            '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
+                                            style: TextStyle(fontSize: 13)),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                            }
+                          }()
+                        ],
                       ),
-                      SizedBox(height: 15),
-                      GadgetIcon(
-                        device: gadget.device,
-                        size: 80,
-                        color: gadgetController.outputFormValue
-                            ? theme.primaryColor
-                            : null,
-                      ),
-                      SizedBox(height: 15),
-                      () {
-                        switch (gadget.iotype) {
-                          case GadgetType.output:
-                            return SwitchListTile(
-                              title: Text('Ativar/Desativar'),
-                              value: gadgetController.outputFormValue,
-                              onChanged: (value) {
-                                gadgetController.setGadgetOutput(value);
-                              },
-                            );
-                          case GadgetType.input:
-                            return Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Status'),
-                                    Text(
-                                        '${processGadgetStatusText(gadgetController.gadgetData.data as bool)}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: (gadgetController
-                                                  .gadgetData.data as bool)
-                                              ? theme.primaryColor
-                                              : Colors.red,
-                                        )),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Última atualização'),
-                                    Text(
-                                        '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
-                                        style: TextStyle(fontSize: 13)),
-                                  ],
-                                ),
-                              ],
-                            );
-                          case GadgetType.spi:
-                            return Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Temperatura'),
-                                    Text(
-                                        '${gadgetController.gadgetData.data.toString()}°C',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Última atualização'),
-                                    Text(
-                                        '${processLastChangedDate(gadgetController.gadgetData.lastChange)}',
-                                        style: TextStyle(fontSize: 13)),
-                                  ],
-                                ),
-                              ],
-                            );
-                        }
-                      }()
-                    ],
+                    ),
                   );
               }
             }(),

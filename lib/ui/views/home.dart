@@ -8,6 +8,7 @@ import 'package:pipgesp/ui/widgets/gadget_tile.dart';
 import 'package:pipgesp/ui/widgets/home_drawer.dart';
 import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Home extends StatelessWidget {
   final String? email;
@@ -105,32 +106,67 @@ class Home extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return ListView(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    RefreshController _refreshController =
+                        RefreshController(initialRefresh: false);
+
+                    void _onRefresh() async {
+                      await homeController.getUser();
+                      _refreshController.refreshCompleted();
+                    }
+
+                    void _onLoading() async {
+                      await homeController.getUser();
+                      _refreshController.loadComplete();
+                    }
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                            Text(
-                              'Dispositivos Cadastrados',
-                              style: TextStyle(
-                                  color: AppColors.darkText,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Dispositivos Cadastrados',
+                                style: TextStyle(
+                                    color: AppColors.darkText,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Divider(
+                                thickness: .5,
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: SmartRefresher(
+                            controller: _refreshController,
+                            enablePullDown: true,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            header: WaterDropHeader(),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                children: () {
+                                  List<GadgetTile> widgets = [];
+                                  for (Gadget gadget
+                                      in homeController.user.gadgets) {
+                                    widgets.add(GadgetTile(
+                                      gadget: gadget,
+                                      identifier: homeController.user.email,
+                                    ));
+                                  }
+                                  return widgets;
+                                }(),
+                              ),
                             ),
-                            Divider(
-                              thickness: .5,
-                              //height: 30,
-                            ),
-                          ] +
-                          () {
-                            List<GadgetTile> widgets = [];
-                            for (Gadget gadget in homeController.user.gadgets) {
-                              widgets.add(GadgetTile(
-                                gadget: gadget,
-                                identifier: homeController.user.email,
-                              ));
-                            }
-                            return widgets;
-                          }(),
+                          ),
+                        ),
+                      ],
                     );
                   }
               }
