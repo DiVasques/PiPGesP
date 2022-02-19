@@ -86,7 +86,7 @@ class GadgetServices {
   ///Param [datatype] must be 'bool' or 'int'
   static Future<void> addGadget({
     required String physicalPort,
-    required String name,
+    required String id,
     required String iotype,
     required String datatype,
   }) async {
@@ -94,7 +94,7 @@ class GadgetServices {
     await Future.delayed(Duration(seconds: 1));
     Uri url = Uri.http(AppUrls.raspberryEndpoint, '/include', {
       'id': physicalPort,
-      'string': name,
+      'string': id,
       'iotype': iotype,
       'datatype': datatype
     });

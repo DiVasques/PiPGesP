@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pipgesp/repository/models/user.dart';
+import 'package:pipgesp/ui/views/add_gadget_screen.dart';
 import 'package:pipgesp/ui/views/home.dart';
 import 'package:pipgesp/ui/views/login_screen.dart';
 import 'package:pipgesp/ui/views/gadget_screen.dart';
@@ -9,6 +11,7 @@ class GenericRouter {
   static const String loginRoute = '/login';
   static const String splashRoute = '/splash';
   static const String gadgetRoute = '/gadget';
+  static const String addGadgetRoute = '/addgadget';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     WidgetBuilder builder;
@@ -27,6 +30,11 @@ class GenericRouter {
               gadget: (settings.arguments as Map<String, dynamic>)["gadget"],
               identifier:
                   (settings.arguments as Map<String, dynamic>)["identifier"],
+            );
+        break;
+      case addGadgetRoute:
+        builder = (BuildContext _) => AddGadgetScreen(
+              user: (settings.arguments as User),
             );
         break;
       default:

@@ -42,4 +42,21 @@ class FieldValidators {
     if (confirmPwd != pwd) return 'Senhas devem ser iguais';
     return null;
   }
+
+  static String? validateName(String? input) {
+    input!.trim();
+    RegExp validRegistrationPattern = RegExp(r"^[a-zA-Z0-9]+$");
+    if (validRegistrationPattern.hasMatch(input) && input.length <= 20) {
+      return null;
+    } else {
+      return 'Nome de dispositivo inválido';
+    }
+  }
+
+  static String? validateNotEmpty(String? input) {
+    if (input == null || input.isEmpty) {
+      return 'Campo Obrigatório';
+    }
+    return null;
+  }
 }

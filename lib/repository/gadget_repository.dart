@@ -47,11 +47,6 @@ class GadgetRepository {
     try {
       await GadgetServices.setGadgetOutput(physicalPort: physicalPort.toString(), value: output.toString());
       result.status = true;
-    } on FirebaseException catch (error) {
-      result.errorCode = error.code;
-      result.errorMessage = error.message;
-      result.status = false;
-      return result;
     } catch (error) {
       result.errorCode = "error.code";
       result.errorMessage = "error.message";

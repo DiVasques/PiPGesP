@@ -26,6 +26,11 @@ class Home extends StatelessWidget {
               tooltip: "Adicionar Dispositivo",
               onPressed: () {
                 homeController.addGadget();
+                Navigator.pushNamed(
+                  context,
+                  GenericRouter.addGadgetRoute,
+                  arguments: homeController.user,
+                );
               },
               elevation: 0,
               child: Icon(

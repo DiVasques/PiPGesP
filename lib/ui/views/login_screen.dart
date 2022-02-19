@@ -6,7 +6,7 @@ import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/login_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
-import 'package:pipgesp/ui/widgets/login_signup_field.dart';
+import 'package:pipgesp/ui/widgets/default_text_field.dart';
 import 'package:pipgesp/ui/utils/app_colors.dart';
 import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:pipgesp/ui/utils/validators.dart';
@@ -249,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
     List<Widget> emailPasswordInputs = [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: LoginSignUpField(
+        child: DefaultTextField(
           hintText: 'Email',
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -267,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Dimensions.heightSpacer(Dimensions.screenHeight(context) * 0.01),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: LoginSignUpField(
+        child: DefaultTextField(
           obscureText: true,
           hintText: 'Senha',
           keyboardType: TextInputType.visiblePassword,
@@ -292,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
     List<Widget> signUpInputs = [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: LoginSignUpField(
+        child: DefaultTextField(
           hintText: 'Nome',
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -308,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Dimensions.heightSpacer(Dimensions.screenHeight(context) * 0.01),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: LoginSignUpField(
+        child: DefaultTextField(
           hintText: 'Email',
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -325,7 +325,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Dimensions.heightSpacer(Dimensions.screenHeight(context) * 0.01),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: LoginSignUpField(
+        child: DefaultTextField(
           hintText: 'DRE',
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
