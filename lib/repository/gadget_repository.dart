@@ -16,8 +16,9 @@ class GadgetRepository {
     Result result = Result(status: false);
 
     try {
-      Map<String, dynamic> json =
-          await GadgetServices.getGadgetDataMock(physicalPort: physicalPort.toString());
+      Map<String, dynamic> json = await GadgetServices.getGadgetData(
+          physicalPort: physicalPort.toString());
+      json = json['data']['${physicalPort.toString()}'];
       gadgetData = GadgetData(
         iotype: Utils.processIOType(json['iotype']),
         name: json['string'],
@@ -43,7 +44,8 @@ class GadgetRepository {
     Result result = Result(status: false);
 
     try {
-      await GadgetServices.setGadgetOutput(physicalPort: physicalPort.toString(), value: output.toString());
+      await GadgetServices.setGadgetOutput(
+          physicalPort: physicalPort.toString(), value: output.toString());
       result.status = true;
     } catch (error) {
       result.errorCode = "error.code";
@@ -55,7 +57,8 @@ class GadgetRepository {
     return result;
   }
 
-  Future<Result> deleteGadget({required String identifier, required Gadget gadget}) async {
+  Future<Result> deleteGadget(
+      {required String identifier, required Gadget gadget}) async {
     debugPrint("state: repository");
     Result result = Result(status: false);
 

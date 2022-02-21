@@ -92,6 +92,9 @@ class AddGadgetController extends BaseController {
         identifier: user.email,
         gadget: gadget,
       );
+      if(!result.status) {
+        setErrorMessage(result.errorMessage!);
+      }
       setState(ViewState.idle);
       return result.status;
     }
