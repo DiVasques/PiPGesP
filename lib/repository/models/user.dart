@@ -5,13 +5,13 @@ class User {
   String name;
   String email;
   String registration;
-  int? raspPort;
+  String raspberryIP;
   late List<Gadget> gadgets = [];
   User({
     required this.uid,
     required this.name,
     required this.email,
     required this.registration,
-    this.raspPort,
+    required this.raspberryIP,
   });
 }

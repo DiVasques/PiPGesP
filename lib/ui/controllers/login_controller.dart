@@ -25,6 +25,7 @@ class LoginController extends BaseController {
   String? _password;
   String? _confirmPassword;
   String? _registration;
+  String? _raspberryIP;
   String? _resetPasswordEmail;
 
   String? get uid => _uid;
@@ -33,6 +34,7 @@ class LoginController extends BaseController {
   String? get password => _password;
   String? get confirmPassword => _confirmPassword;
   String? get registration => _registration;
+  String? get raspberryIP => _raspberryIP;
   String? get resetPasswordEmail => _resetPasswordEmail;
 
   set uid(value) {
@@ -65,6 +67,11 @@ class LoginController extends BaseController {
     notifyListeners();
   }
 
+  set raspberryIP(value) {
+    _raspberryIP = value;
+    notifyListeners();
+  }
+
   set resetPasswordEmail(value) {
     _resetPasswordEmail = value;
     notifyListeners();
@@ -77,6 +84,7 @@ class LoginController extends BaseController {
     _password = null;
     _confirmPassword = null;
     _registration = null;
+    _raspberryIP = null;
     _resetPasswordEmail = null;
     notifyListeners();
   }
@@ -117,6 +125,7 @@ class LoginController extends BaseController {
           name: name!,
           password: password!,
           registration: registration!,
+          raspberryIP: raspberryIP!,
         );
 
         debugPrint("Status: ${authResult.status.toString()}");

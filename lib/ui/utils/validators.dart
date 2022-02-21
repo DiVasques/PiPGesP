@@ -53,6 +53,16 @@ class FieldValidators {
     }
   }
 
+  static String? validateIP(String? input) {
+    input!.trim();
+    RegExp validRegistrationPattern = RegExp(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}$");
+    if (validRegistrationPattern.hasMatch(input)) {
+      return null;
+    } else {
+      return 'Nome de dispositivo inválido';
+    }
+  }
+
   static String? validateNotEmpty(String? input) {
     if (input == null || input.isEmpty) {
       return 'Campo Obrigatório';

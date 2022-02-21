@@ -39,6 +39,7 @@ class AuthenticationServices {
   static Future<Result> emailSignUp({
     required String name,
     required String registration,
+    required String raspberryIP,
     required String email,
     required String password,
   }) async {
@@ -61,6 +62,7 @@ class AuthenticationServices {
         'name': name,
         'email': email,
         'registration': registration,
+        'raspberryIP': raspberryIP,
         'gadgets': []
       };
 

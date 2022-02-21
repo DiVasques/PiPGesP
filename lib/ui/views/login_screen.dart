@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode _nameFocus;
   late FocusNode _phoneNumberFocus;
   late FocusNode _registrationFocus;
+  late FocusNode _raspberryIPFocus;
   late FocusNode _confirmPasswordFocus;
   late FocusNode _resetPasswordFocus;
   static const TextStyle style = TextStyle(fontSize: 20.0);
@@ -40,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _nameFocus = FocusNode();
     _phoneNumberFocus = FocusNode();
     _registrationFocus = FocusNode();
+    _raspberryIPFocus = FocusNode();
     _confirmPasswordFocus = FocusNode();
     _resetPasswordFocus = FocusNode();
     super.initState();
@@ -52,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _nameFocus.dispose();
     _phoneNumberFocus.dispose();
     _registrationFocus.dispose();
+    _raspberryIPFocus.dispose();
     _confirmPasswordFocus.dispose();
     super.dispose();
   }
@@ -330,10 +333,27 @@ class _LoginScreenState extends State<LoginScreen> {
         child: DefaultTextField(
           labelText: 'DRE',
           keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.done,
+          textInputAction: TextInputAction.next,
           validator: FieldValidators.validateRegistration,
           onSaved: (value) => loginController.registration = value,
           focusNode: _registrationFocus,
+          style: style,
+          onFieldSubmitted: (_) {
+            FocusScope.of(context).unfocus();
+            FocusScope.of(context).requestFocus(_raspberryIPFocus);
+          },
+        ),
+      ),
+      Dimensions.heightSpacer(Dimensions.screenHeight(context) * 0.01),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: DefaultTextField(
+          labelText: 'IP do Raspberry',
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          validator: FieldValidators.validateIP,
+          onSaved: (value) => loginController.raspberryIP = value,
+          focusNode: _raspberryIPFocus,
           style: style,
           onFieldSubmitted: (_) {
             FocusScope.of(context).unfocus();
@@ -347,6 +367,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: TextFormField(
           style: style,
           textAlign: TextAlign.start,
+          textInputAction: TextInputAction.next,
           obscureText: true,
           focusNode: _passwordFocus,
           onFieldSubmitted: (_) {
@@ -531,7 +552,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: Dimensions.screenHeight(context) * 0.07,
           width: Dimensions.screenWidth(context) / 0.15,
           child: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: signButton,
           ),
         ),
