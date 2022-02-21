@@ -15,14 +15,20 @@ import 'package:provider/provider.dart';
 class GadgetScreen extends StatelessWidget {
   final Gadget gadget;
   final String identifier;
-  const GadgetScreen({Key? key, required this.gadget, required this.identifier})
-      : super(key: key);
+  final String raspberryIP;
+  const GadgetScreen({
+    Key? key,
+    required this.raspberryIP,
+    required this.gadget,
+    required this.identifier,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ChangeNotifierProvider(
-      create: (_) => GadgetController(physicalPort: gadget.physicalPort),
+      create: (_) => GadgetController(
+          raspberryIP: raspberryIP, physicalPort: gadget.physicalPort),
       child: Consumer<GadgetController>(
         builder: (context, gadgetController, _) {
           return Scaffold(

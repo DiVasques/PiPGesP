@@ -89,10 +89,11 @@ class AddGadgetController extends BaseController {
         id: uid,
       );
       Result result = await _addGadgetRepository.addGadget(
+        raspberryIP: user.raspberryIP,
         identifier: user.email,
         gadget: gadget,
       );
-      if(!result.status) {
+      if (!result.status) {
         setErrorMessage(result.errorMessage ?? '');
       }
       setState(ViewState.idle);

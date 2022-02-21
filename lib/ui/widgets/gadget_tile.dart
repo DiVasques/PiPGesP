@@ -11,11 +11,13 @@ import 'package:provider/provider.dart';
 class GadgetTile extends StatelessWidget {
   final Gadget gadget;
   final String identifier;
+  final String raspberryIP;
   final BuildContext scaffoldContext;
   const GadgetTile(
       {Key? key,
       required this.gadget,
       required this.identifier,
+      required this.raspberryIP,
       required this.scaffoldContext})
       : super(key: key);
 
@@ -25,7 +27,11 @@ class GadgetTile extends StatelessWidget {
       elevation: 1,
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, GenericRouter.gadgetRoute,
-            arguments: {"gadget": gadget, "identifier": identifier}),
+            arguments: {
+              "raspberryIP": raspberryIP,
+              "gadget": gadget,
+              "identifier": identifier
+            }),
         child: Padding(
           padding: const EdgeInsets.all(8.5),
           child: Row(

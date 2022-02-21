@@ -27,6 +27,8 @@ class GenericRouter {
         break;
       case gadgetRoute:
         builder = (BuildContext _) => GadgetScreen(
+              raspberryIP:
+                  (settings.arguments as Map<String, dynamic>)["raspberryIP"],
               gadget: (settings.arguments as Map<String, dynamic>)["gadget"],
               identifier:
                   (settings.arguments as Map<String, dynamic>)["identifier"],

@@ -177,6 +177,8 @@ class Home extends StatelessWidget {
                                             in homeController.user.gadgets) {
                                           widgets.add(GadgetTile(
                                             gadget: gadget,
+                                            raspberryIP:
+                                                homeController.user.raspberryIP,
                                             identifier:
                                                 homeController.user.email,
                                             scaffoldContext:

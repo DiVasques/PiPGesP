@@ -8,13 +8,17 @@ import 'package:pipgesp/services/utils/database_collections.dart';
 import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class AddGadgetRepository {
-  Future<Result> addGadget(
-      {required String identifier, required Gadget gadget}) async {
+  Future<Result> addGadget({
+    required String raspberryIP,
+    required String identifier,
+    required Gadget gadget,
+  }) async {
     debugPrint("state: repository");
     Result result = Result(status: false);
 
     try {
       await GadgetServices.addGadget(
+        raspberryIP: raspberryIP,
         physicalPort: gadget.physicalPort.toString(),
         id: gadget.id,
         datatype: gadget.iotype == GadgetType.spi ? 'int' : 'bool',

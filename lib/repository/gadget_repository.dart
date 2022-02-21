@@ -11,13 +11,14 @@ import 'package:pipgesp/services/utils/database_collections.dart';
 class GadgetRepository {
   late GadgetData gadgetData;
 
-  Future<Result> getGadgetData({required int physicalPort}) async {
+  Future<Result> getGadgetData(
+      {required String raspberryIP, required int physicalPort}) async {
     debugPrint("state: repository");
     Result result = Result(status: false);
 
     try {
       Map<String, dynamic> json = await GadgetServices.getGadgetData(
-          physicalPort: physicalPort.toString());
+          raspberryIP: raspberryIP, physicalPort: physicalPort.toString());
       json = json['data']['${physicalPort.toString()}'];
       gadgetData = GadgetData(
         iotype: Utils.processIOType(json['iotype']),
@@ -38,14 +39,19 @@ class GadgetRepository {
     return result;
   }
 
-  Future<Result> setGadgetOutput(
-      {required int physicalPort, required bool output}) async {
+  Future<Result> setGadgetOutput({
+    required String raspberryIP,
+    required int physicalPort,
+    required bool output,
+  }) async {
     debugPrint("state: repository");
     Result result = Result(status: false);
 
     try {
       await GadgetServices.setGadgetOutput(
-          physicalPort: physicalPort.toString(), value: output.toString());
+          raspberryIP: raspberryIP,
+          physicalPort: physicalPort.toString(),
+          value: output.toString());
       result.status = true;
     } catch (error) {
       result.errorCode = "error.code";

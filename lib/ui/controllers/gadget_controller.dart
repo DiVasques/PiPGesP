@@ -10,7 +10,8 @@ import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class GadgetController extends BaseController {
   final int physicalPort;
-  GadgetController({required this.physicalPort}) {
+  final String raspberryIP;
+  GadgetController({required this.raspberryIP, required this.physicalPort}) {
     getGadgetData();
   }
 
@@ -27,8 +28,8 @@ class GadgetController extends BaseController {
   Future<void> getGadgetData() async {
     debugPrint(runtimeType.toString() + ".state: getGadgetData");
     setState(ViewState.busy);
-    Result result =
-        await _gadgetRepository.getGadgetData(physicalPort: physicalPort);
+    Result result = await _gadgetRepository.getGadgetData(
+        raspberryIP: raspberryIP, physicalPort: physicalPort);
 
     if (result.status) {
       if ((gadgetData.iotype == GadgetType.output ||
@@ -47,7 +48,7 @@ class GadgetController extends BaseController {
     debugPrint(runtimeType.toString() + ".state: setGadgetOutput");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.setGadgetOutput(
-        physicalPort: physicalPort, output: value);
+        raspberryIP: raspberryIP, physicalPort: physicalPort, output: value);
     if (result.status) {
       outputFormValue = value;
       setState(ViewState.idle);
