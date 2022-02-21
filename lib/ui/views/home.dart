@@ -8,11 +8,11 @@ import 'package:pipgesp/ui/widgets/gadget_tile.dart';
 import 'package:pipgesp/ui/widgets/home_drawer.dart';
 import 'package:pipgesp/ui/utils/dimensions.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Home extends StatelessWidget {
   final String? email;
-  const Home({Key? key, this.email}) : super(key: key);
+  final GlobalKey _scaffoldkey = GlobalKey();
+  Home({Key? key, this.email}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class Home extends StatelessWidget {
       child: Consumer<HomeController>(
         builder: (context, homeController, _) {
           return Scaffold(
+            key: _scaffoldkey,
             floatingActionButton: FloatingActionButton(
               backgroundColor: theme.primaryColor,
               tooltip: "Adicionar Dispositivo",
@@ -106,17 +107,8 @@ class Home extends StatelessWidget {
                       ),
                     );
                   } else {
-                    RefreshController _refreshController =
-                        RefreshController(initialRefresh: false);
-
-                    void _onRefresh() async {
-                      await homeController.getUser();
-                      _refreshController.refreshCompleted();
-                    }
-
-                    void _onLoading() async {
-                      await homeController.getUser();
-                      _refreshController.loadComplete();
+                    Future<void> _onRefresh() async {
+                      return await homeController.getUser();
                     }
 
                     return Column(
@@ -142,27 +134,23 @@ class Home extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: SmartRefresher(
-                            controller: _refreshController,
-                            enablePullDown: true,
+                          child: RefreshIndicator(
                             onRefresh: _onRefresh,
-                            onLoading: _onLoading,
-                            header: WaterDropHeader(),
-                            child: Padding(
+                            child: ListView(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                children: () {
-                                  List<GadgetTile> widgets = [];
-                                  for (Gadget gadget
-                                      in homeController.user.gadgets) {
-                                    widgets.add(GadgetTile(
-                                      gadget: gadget,
-                                      identifier: homeController.user.email,
-                                    ));
-                                  }
-                                  return widgets;
-                                }(),
-                              ),
+                              children: () {
+                                List<GadgetTile> widgets = [];
+                                for (Gadget gadget
+                                    in homeController.user.gadgets) {
+                                  widgets.add(GadgetTile(
+                                    gadget: gadget,
+                                    identifier: homeController.user.email,
+                                    scaffoldContext:
+                                        _scaffoldkey.currentContext ?? context,
+                                  ));
+                                }
+                                return widgets;
+                              }(),
                             ),
                           ),
                         ),

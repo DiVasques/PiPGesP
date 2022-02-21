@@ -93,7 +93,7 @@ class AddGadgetController extends BaseController {
         gadget: gadget,
       );
       if(!result.status) {
-        setErrorMessage(result.errorMessage!);
+        setErrorMessage(result.errorMessage ?? '');
       }
       setState(ViewState.idle);
       return result.status;

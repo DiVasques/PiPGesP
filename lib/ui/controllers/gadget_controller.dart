@@ -38,7 +38,7 @@ class GadgetController extends BaseController {
       }
       setState(ViewState.idle);
     } else {
-      setErrorMessage(result.errorMessage!);
+      setErrorMessage(result.errorMessage ?? '');
       setState(ViewState.error);
     }
   }
@@ -52,7 +52,7 @@ class GadgetController extends BaseController {
       outputFormValue = value;
       setState(ViewState.idle);
     } else {
-      setErrorMessage(result.errorMessage!);
+      setErrorMessage(result.errorMessage ?? '');
       setState(ViewState.error);
     }
   }
@@ -63,8 +63,8 @@ class GadgetController extends BaseController {
     Result result = await _gadgetRepository.deleteGadget(
         identifier: identifier, gadget: gadget);
     if (!result.status) {
-      setErrorMessage(result.errorMessage!);
-      setState(ViewState.error);
+      setErrorMessage(result.errorMessage ?? '');
+      setState(ViewState.idle);
     }
     return result.status;
   }
