@@ -60,7 +60,8 @@ class AuthenticationServices {
         'uid': user.uid,
         'name': name,
         'email': email,
-        'registration': registration
+        'registration': registration,
+        'gadgets': []
       };
 
       await FirestoreHandler.addDocument(

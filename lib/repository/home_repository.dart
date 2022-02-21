@@ -25,7 +25,6 @@ class HomeRepository {
         name: snapshot.get('name'),
         email: snapshot.get('email'),
         registration: snapshot.get('registration'),
-        raspPort: snapshot.get('raspPort'),
       );
       for (Map<String, dynamic> gadgetMap in snapshot.get('gadgets')) {
         Gadget gadget = Gadget(
