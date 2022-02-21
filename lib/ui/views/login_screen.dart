@@ -261,7 +261,6 @@ class _LoginScreenState extends State<LoginScreen> {
           validator: FieldValidators.validateEmail,
           onSaved: (value) => loginController.email = value,
           focusNode: _emailFocus,
-          initValue: "diogovasques@poli.ufrj.br",
           style: style,
           onFieldSubmitted: (_) {
             FocusScope.of(context).unfocus();
@@ -281,7 +280,6 @@ class _LoginScreenState extends State<LoginScreen> {
           onSaved: (value) => loginController.password = value,
           focusNode: _passwordFocus,
           style: style,
-          initValue: "666666",
           onFieldSubmitted: (_) {
             FocusScope.of(context).unfocus();
             if (loginController.loginState == LoginState.login) {
