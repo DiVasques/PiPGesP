@@ -96,67 +96,106 @@ class Home extends StatelessWidget {
                     ),
                   );
                 case ViewState.idle:
-                  if (homeController.user.gadgets.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'Nenhum Dispositivo Cadastrado',
-                        style: TextStyle(
-                            color: theme.primaryColorDark,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    );
-                  } else {
-                    Future<void> _onRefresh() async {
-                      return await homeController.getUser();
-                    }
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Dispositivos Cadastrados',
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: () {
+                          if (homeController.user.gadgets.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'Nenhum Dispositivo Cadastrado',
                                 style: TextStyle(
-                                    color: AppColors.darkText,
+                                    color: theme.primaryColorDark,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Divider(
-                                thickness: .5,
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: RefreshIndicator(
-                            onRefresh: _onRefresh,
-                            child: ListView(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              children: () {
-                                List<GadgetTile> widgets = [];
-                                for (Gadget gadget
-                                    in homeController.user.gadgets) {
-                                  widgets.add(GadgetTile(
-                                    gadget: gadget,
-                                    identifier: homeController.user.email,
-                                    scaffoldContext:
-                                        _scaffoldkey.currentContext ?? context,
-                                  ));
-                                }
-                                return widgets;
-                              }(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
+                            );
+                          } else {
+                            Future<void> _onRefresh() async {
+                              return await homeController.getUser();
+                            }
+
+                            return Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      RichText(
+                                        textAlign: TextAlign.start,
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: "IP:",
+                                              style: TextStyle(
+                                                color: AppColors.darkText,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  "${homeController.user.raspberryIP}",
+                                              style: TextStyle(
+                                                color: AppColors.darkText,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'Dispositivos Cadastrados',
+                                        style: TextStyle(
+                                            color: AppColors.darkText,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Divider(
+                                        thickness: .5,
+                                        height: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RefreshIndicator(
+                                    onRefresh: _onRefresh,
+                                    child: ListView(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      children: () {
+                                        List<GadgetTile> widgets = [];
+                                        for (Gadget gadget
+                                            in homeController.user.gadgets) {
+                                          widgets.add(GadgetTile(
+                                            gadget: gadget,
+                                            identifier:
+                                                homeController.user.email,
+                                            scaffoldContext:
+                                                _scaffoldkey.currentContext ??
+                                                    context,
+                                          ));
+                                        }
+                                        return widgets;
+                                      }(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        }(),
+                      )
+                    ],
+                  );
               }
             }(),
           );
