@@ -103,7 +103,7 @@ class GadgetScreen extends StatelessWidget {
                               IconButton(
                                 onPressed: () {
                                   gadgetController
-                                      .deleteGadget(identifier, gadget)
+                                      .deleteGadget(raspberryIP, gadget)
                                       .then((bool result) {
                                     if (result) {
                                       Navigator.pushNamedAndRemoveUntil(

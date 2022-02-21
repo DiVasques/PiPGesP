@@ -10,7 +10,6 @@ import 'package:pipgesp/ui/utils/gadget_types.dart';
 class AddGadgetRepository {
   Future<Result> addGadget({
     required String raspberryIP,
-    required String identifier,
     required Gadget gadget,
   }) async {
     debugPrint("state: repository");
@@ -34,8 +33,8 @@ class AddGadgetRepository {
         "physicalPort": gadget.physicalPort,
       };
       await FirestoreHandler.addOnArray(
-          identifier: identifier,
-          collection: DatabaseCollections.users,
+          identifier: raspberryIP,
+          collection: DatabaseCollections.raspberries,
           field: "gadgets",
           param: param);
       debugPrint("state: added on firestore");

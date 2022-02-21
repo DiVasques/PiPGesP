@@ -77,7 +77,7 @@ class GadgetTile extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     homeController
-                        .deleteGadget(identifier, gadget)
+                        .deleteGadget(raspberryIP, gadget)
                         .then((result) {
                       if (!result) {
                         ScaffoldMessenger.of(scaffoldContext).showSnackBar(

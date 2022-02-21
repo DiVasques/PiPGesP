@@ -62,8 +62,7 @@ class AuthenticationServices {
         'name': name,
         'email': email,
         'registration': registration,
-        'raspberryIP': raspberryIP,
-        'gadgets': []
+        'raspberryIP': raspberryIP
       };
 
       await FirestoreHandler.addDocument(
@@ -71,6 +70,19 @@ class AuthenticationServices {
         identifier: email,
         params: params,
       );
+
+      DocumentSnapshot raspDoc = await FirestoreHandler.getDocument(
+        collection: DatabaseCollections.raspberries,
+        identifier: raspberryIP,
+      );
+
+      if (!raspDoc.exists) {
+        await FirestoreHandler.addDocument(
+          collection: DatabaseCollections.raspberries,
+          identifier: raspberryIP,
+          params: {'gadgets': []},
+        );
+      }
 
       await firebase_auth.FirebaseAuth.instance.signOut();
 

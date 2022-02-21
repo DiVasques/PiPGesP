@@ -15,19 +15,24 @@ class HomeRepository {
     Result result = Result(status: false);
 
     try {
-      DocumentSnapshot snapshot = await FirestoreHandler.getDocument(
+      DocumentSnapshot userSnapshot = await FirestoreHandler.getDocument(
         identifier: email,
         collection: DatabaseCollections.users,
       );
-      debugPrint(snapshot.data().toString());
+      debugPrint(userSnapshot.data().toString());
       user = User(
-        uid: snapshot.get('uid'),
-        name: snapshot.get('name'),
-        email: snapshot.get('email'),
-        registration: snapshot.get('registration'),
-        raspberryIP: snapshot.get('raspberryIP'),
+        uid: userSnapshot.get('uid'),
+        name: userSnapshot.get('name'),
+        email: userSnapshot.get('email'),
+        registration: userSnapshot.get('registration'),
+        raspberryIP: userSnapshot.get('raspberryIP'),
       );
-      for (Map<String, dynamic> gadgetMap in snapshot.get('gadgets')) {
+      DocumentSnapshot gadgetsSnapshot = await FirestoreHandler.getDocument(
+        identifier: user.raspberryIP,
+        collection: DatabaseCollections.raspberries,
+      );
+      debugPrint(gadgetsSnapshot.data().toString());
+      for (Map<String, dynamic> gadgetMap in gadgetsSnapshot.get('gadgets')) {
         Gadget gadget = Gadget(
           device: Utils.processDevice(gadgetMap['device'] as String),
           iotype: Utils.processIOType(gadgetMap['iotype'] as String),
@@ -38,7 +43,7 @@ class HomeRepository {
         user.gadgets.add(gadget);
       }
       debugPrint(user.uid);
-      debugPrint(snapshot.get('uid'));
+      debugPrint(userSnapshot.get('uid'));
       result.status = true;
     } on FirebaseException catch (error) {
       result.errorCode = error.code;
@@ -70,7 +75,7 @@ class HomeRepository {
       };
       await FirestoreHandler.deleteFromArray(
           identifier: identifier,
-          collection: DatabaseCollections.users,
+          collection: DatabaseCollections.raspberries,
           field: "gadgets",
           param: param);
       result.status = true;

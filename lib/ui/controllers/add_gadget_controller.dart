@@ -90,7 +90,6 @@ class AddGadgetController extends BaseController {
       );
       Result result = await _addGadgetRepository.addGadget(
         raspberryIP: user.raspberryIP,
-        identifier: user.email,
         gadget: gadget,
       );
       if (!result.status) {

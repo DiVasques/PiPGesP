@@ -78,7 +78,7 @@ class GadgetRepository {
       };
       await FirestoreHandler.deleteFromArray(
           identifier: identifier,
-          collection: DatabaseCollections.users,
+          collection: DatabaseCollections.raspberries,
           field: "gadgets",
           param: param);
       result.status = true;
