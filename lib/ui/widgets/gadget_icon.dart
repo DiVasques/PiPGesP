@@ -18,7 +18,7 @@ class GadgetIcon extends StatelessWidget {
             return Icons.lightbulb;
           case GadgetDevice.thermometer:
             return Icons.thermostat;
-          case GadgetDevice.relay:
+          case GadgetDevice.other:
             return Icons.power_settings_new_rounded;
           default:
         }

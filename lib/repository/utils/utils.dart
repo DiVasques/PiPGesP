@@ -20,7 +20,7 @@ class Utils {
   static GadgetDevice processDevice(String deviceString) {
     GadgetDevice gadgetDevice = GadgetDevice.values.firstWhere(
       (device) => device.name == deviceString.toLowerCase(),
-      orElse: () => GadgetDevice.relay,
+      orElse: () => GadgetDevice.other,
     );
     return gadgetDevice;
   }
