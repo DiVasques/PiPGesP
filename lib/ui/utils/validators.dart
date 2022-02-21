@@ -59,7 +59,7 @@ class FieldValidators {
     if (validRegistrationPattern.hasMatch(input)) {
       return null;
     } else {
-      return 'Nome de dispositivo inválido';
+      return 'Endereço de IP inválido';
     }
   }
 
