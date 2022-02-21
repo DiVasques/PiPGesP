@@ -1,7 +1,11 @@
 {
-    "string": "temp",
-    "iotype": "spi",
-    "datatype": "int",
-    "data": 24,
-    "last": 1645208009327
+    "data": {
+        "999": {
+            "string": "temp",
+            "iotype": "spi",
+            "datatype": "int",
+            "data": 24,
+            "last": 1645208009327
+        }
+    }
 }

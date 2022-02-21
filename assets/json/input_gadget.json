@@ -1,7 +1,11 @@
 {
-    "string": "relay",
-    "iotype": "input",
-    "datatype": "bool",
-    "data": true,
-    "last": 1645208009327
+    "data": {
+        "11": {
+            "string": "relay",
+            "iotype": "input",
+            "datatype": "bool",
+            "data": true,
+            "last": 1645208009327
+        }
+    }
 }
