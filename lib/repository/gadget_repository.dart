@@ -24,7 +24,7 @@ class GadgetRepository {
         iotype: Utils.processIOType(json['iotype']),
         name: json['string'],
         dataType: Utils.processDataType(json['datatype']),
-        lastChange: DateTime.fromMillisecondsSinceEpoch(json['last']).toLocal(),
+        lastChange: DateTime.fromMillisecondsSinceEpoch(json['last']*1000).toLocal(),
         data: json['data']!,
       );
 
