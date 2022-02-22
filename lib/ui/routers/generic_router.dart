@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pipgesp/repository/models/user.dart';
 import 'package:pipgesp/ui/views/add_gadget_screen.dart';
+import 'package:pipgesp/ui/views/change_raspberry_screen.dart';
 import 'package:pipgesp/ui/views/home.dart';
 import 'package:pipgesp/ui/views/login_screen.dart';
 import 'package:pipgesp/ui/views/gadget_screen.dart';
@@ -12,6 +13,7 @@ class GenericRouter {
   static const String splashRoute = '/splash';
   static const String gadgetRoute = '/gadget';
   static const String addGadgetRoute = '/addgadget';
+  static const String changeRaspberryRoute = '/changeRaspberry';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     WidgetBuilder builder;
@@ -36,6 +38,11 @@ class GenericRouter {
         break;
       case addGadgetRoute:
         builder = (BuildContext _) => AddGadgetScreen(
+              user: (settings.arguments as User),
+            );
+        break;
+      case changeRaspberryRoute:
+        builder = (BuildContext _) => ChangeRaspberryScreen(
               user: (settings.arguments as User),
             );
         break;

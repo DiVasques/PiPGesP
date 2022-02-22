@@ -112,6 +112,51 @@ class HomeDrawer extends StatelessWidget {
                                           homeController.getUser();
                                         },
                                       ),
+                                      ListTile(
+                                        title: Text("Trocar IP"),
+                                        trailing: Icon(
+                                          Icons.edit,
+                                          color: theme.primaryColor,
+                                        ),
+                                        onTap: () {
+                                          Navigator.popAndPushNamed(
+                                            context,
+                                            GenericRouter.changeRaspberryRoute,
+                                            arguments: homeController.user,
+                                          );
+                                        },
+                                      ),
+                                      ListTile(
+                                        title: Text("Limpar Dispositivos"),
+                                        trailing: Icon(
+                                          Icons.delete,
+                                          color: theme.primaryColor,
+                                        ),
+                                        onTap: () {
+                                          homeController
+                                              .deleteAllGadgets()
+                                              .then((bool? result) {
+                                            Navigator.pop(
+                                              context,
+                                            );
+                                            if (result != null) {
+                                              if (!result) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                    content: Text(
+                                                        'Erro. Tente novamente mais tarde'),
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                          });
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ],

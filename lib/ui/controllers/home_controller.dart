@@ -41,4 +41,18 @@ class HomeController extends BaseController {
     }
     return result.status;
   }
+
+  Future<bool> deleteAllGadgets() async {
+    debugPrint(runtimeType.toString() + ".state: deleteGadget");
+    setState(ViewState.busy);
+    Result result =
+        await _homeRepository.deleteAllGadgets(identifier: user.raspberryIP);
+    if (!result.status) {
+      setErrorMessage(result.errorMessage ?? '');
+      setState(ViewState.idle);
+    } else {
+      getUser();
+    }
+    return result.status;
+  }
 }

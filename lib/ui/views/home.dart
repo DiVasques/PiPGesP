@@ -97,7 +97,37 @@ class Home extends StatelessWidget {
                   );
                 case ViewState.idle:
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "IP:",
+                                style: TextStyle(
+                                  color: AppColors.darkText,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: "${homeController.user.raspberryIP}",
+                                style: TextStyle(
+                                  color: AppColors.darkText,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Expanded(
                         child: () {
                           if (homeController.user.gadgets.isEmpty) {
@@ -124,33 +154,6 @@ class Home extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      RichText(
-                                        textAlign: TextAlign.start,
-                                        text: TextSpan(
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: "IP:",
-                                              style: TextStyle(
-                                                color: AppColors.darkText,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  "${homeController.user.raspberryIP}",
-                                              style: TextStyle(
-                                                color: AppColors.darkText,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
                                       Text(
                                         'Dispositivos Cadastrados',
                                         style: TextStyle(

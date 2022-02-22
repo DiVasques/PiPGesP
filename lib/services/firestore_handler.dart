@@ -28,6 +28,19 @@ class FirestoreHandler {
         .set(params);
   }
 
+  ///Adiciona documento ao banco de dados
+  static Future<void> updateDocument({
+    required String identifier,
+    required String collection,
+    required Map<String, dynamic> params,
+  }) async {
+    debugPrint("state: services");
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(identifier)
+        .update(params);
+  }
+
   ///Adiciona item a um array de documento do banco de dados
   static Future<void> addOnArray({
     required String identifier,
