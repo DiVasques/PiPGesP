@@ -94,8 +94,8 @@ class AddGadgetController extends BaseController {
       );
       if (!result.status) {
         setErrorMessage(result.errorMessage ?? '');
+        setState(ViewState.idle);
       }
-      setState(ViewState.idle);
       return result.status;
     }
     return null;
