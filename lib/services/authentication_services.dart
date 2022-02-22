@@ -19,22 +19,16 @@ class AuthenticationServices {
   static String accCreatedVerifyEmailMessage =
       'Conta criada com sucesso. Verifique seu email e clique no link de confirmação';
 
-  // static Future<DocumentSnapshot> isUserAuthenticated() async {
-  //   DocumentSnapshot document;
-
-  //   firebase_auth.User? firebaseUser = firebase_auth.FirebaseAuth.instance.currentUser;
-
-  //   if (firebaseUser == null) {
-  //     return null;
-  //   } else {
-  //     User.uid = firebaseUser.uid;
-  //     print(User.uid);
-  //     // TODO: fix exception in this line
-  //     //document = await FirestoreHandler.getUser(departamento: User.departamento, empresa: User.empresa);
-  //   }
-
-  //   return document;
-  // }
+  static String? isUserAuthenticated() {
+    firebase_auth.User? firebaseUser =
+        firebase_auth.FirebaseAuth.instance.currentUser;
+    if (firebaseUser == null) {
+      return null;
+    }
+    debugPrint('user already authenticated');
+    debugPrint("Email: ${firebaseUser.email}");
+    return firebaseUser.email;
+  }
 
   static Future<Result> emailSignUp({
     required String name,
