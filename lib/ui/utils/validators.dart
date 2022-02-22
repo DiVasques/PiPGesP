@@ -1,19 +1,12 @@
 ///Define validators for a variety of Text Fields, returns
 ///`null` if the input is valid or the corresponding error message as a `String`
 class FieldValidators {
-  static String requiredEmailDomain = ''; // Leave empty for testing
-
   static String? validateEmail(String? input) {
     input!.trim();
-    String regexString = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@poli.ufrj.br";
+    String regexString = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[\w]+.ufrj.br$";
     RegExp validEmailPattern = RegExp(regexString);
-    RegExp requiredEmailPattern = RegExp('$requiredEmailDomain\$');
     if (validEmailPattern.hasMatch(input)) {
-      if (requiredEmailPattern.hasMatch(input) || requiredEmailDomain == '') {
-        return null;
-      } else {
-        return 'Email dever pertencer ao domínio $requiredEmailDomain';
-      }
+      return null;
     } else {
       return 'E-mail Inválido';
     }
@@ -55,7 +48,8 @@ class FieldValidators {
 
   static String? validateIP(String? input) {
     input!.trim();
-    RegExp validRegistrationPattern = RegExp(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}$");
+    RegExp validRegistrationPattern =
+        RegExp(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}$");
     if (validRegistrationPattern.hasMatch(input)) {
       return null;
     } else {
