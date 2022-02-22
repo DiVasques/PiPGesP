@@ -103,7 +103,7 @@ class _AddGadgetScreenState extends State<AddGadgetScreen> {
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.next,
                                   initValue: addGadgetController.name ?? '',
-                                  validator: FieldValidators.validateName,
+                                  validator: FieldValidators.validateGadgetName,
                                   onSaved: (value) =>
                                       addGadgetController.name = value,
                                   focusNode: _nameFocus,

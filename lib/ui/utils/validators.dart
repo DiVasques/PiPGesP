@@ -42,6 +42,16 @@ class FieldValidators {
     if (validRegistrationPattern.hasMatch(input) && input.length <= 20) {
       return null;
     } else {
+      return 'Nome inválido';
+    }
+  }
+
+  static String? validateGadgetName(String? input) {
+    input!.trim();
+    RegExp validRegistrationPattern = RegExp(r"^[a-zA-Z0-9 À-ÿ]+$");
+    if (validRegistrationPattern.hasMatch(input) && input.length <= 20) {
+      return null;
+    } else {
       return 'Nome de dispositivo inválido';
     }
   }

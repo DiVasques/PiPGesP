@@ -301,6 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
           textInputAction: TextInputAction.next,
           onSaved: (value) => loginController.name = value,
           focusNode: _nameFocus,
+          validator: FieldValidators.validateName,
           style: style,
           onFieldSubmitted: (_) {
             FocusScope.of(context).unfocus();
