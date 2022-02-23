@@ -3,6 +3,7 @@ import 'package:pipgesp/services/authentication_services.dart';
 import 'package:pipgesp/ui/controllers/base_controller.dart';
 import 'package:pipgesp/ui/controllers/home_controller.dart';
 import 'package:pipgesp/ui/routers/generic_router.dart';
+import 'package:pipgesp/utils/string_capitalize.dart';
 import 'package:provider/provider.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -92,7 +93,7 @@ class HomeDrawer extends StatelessWidget {
                                         alignment: Alignment.bottomLeft,
                                         height: 50,
                                         child: Text(
-                                          "Bem-vindo, ${homeController.user.name.split(" ")[0]}",
+                                          "Bem-vindo, ${homeController.user.name.split(" ")[0].capitalize()}",
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
