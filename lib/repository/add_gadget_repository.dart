@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pipgesp/repository/models/gadget.dart';
 import 'package:pipgesp/services/firestore_handler.dart';
-import 'package:pipgesp/services/gadget_services.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/services/utils/database_collections.dart';
-import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class AddGadgetRepository {
   Future<Result> addGadget({
@@ -16,15 +14,6 @@ class AddGadgetRepository {
     Result result = Result(status: false);
 
     try {
-      await GadgetServices.addGadget(
-        raspberryIP: raspberryIP,
-        physicalPort: gadget.physicalPort.toString(),
-        id: gadget.id,
-        datatype: gadget.iotype == GadgetType.spi ? 'int' : 'bool',
-        iotype: gadget.iotype.name,
-      );
-      debugPrint("state: added on server");
-
       Map<String, dynamic> param = {
         "device": gadget.device.name,
         "id": gadget.id,

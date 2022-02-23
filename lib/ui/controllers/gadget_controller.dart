@@ -9,10 +9,10 @@ import 'package:pipgesp/ui/utils/data_types.dart';
 import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class GadgetController extends BaseController {
-  final int physicalPort;
+  final Gadget gadget;
   final String raspberryIP;
-  GadgetController({required this.raspberryIP, required this.physicalPort}) {
-    getGadgetData();
+  GadgetController({required this.raspberryIP, required this.gadget}) {
+    getGadgetData(gadget);
   }
 
   bool _outputFormValue = false;
@@ -25,11 +25,11 @@ class GadgetController extends BaseController {
   final GadgetRepository _gadgetRepository = GadgetRepository();
   GadgetData get gadgetData => _gadgetRepository.gadgetData;
 
-  Future<void> getGadgetData() async {
+  Future<void> getGadgetData(Gadget gadget) async {
     debugPrint(runtimeType.toString() + ".state: getGadgetData");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.getGadgetData(
-        raspberryIP: raspberryIP, physicalPort: physicalPort);
+        raspberryIP: raspberryIP, gadget: gadget);
 
     if (result.status) {
       if ((gadgetData.iotype == GadgetType.output ||
@@ -48,7 +48,9 @@ class GadgetController extends BaseController {
     debugPrint(runtimeType.toString() + ".state: setGadgetOutput");
     setState(ViewState.busy);
     Result result = await _gadgetRepository.setGadgetOutput(
-        raspberryIP: raspberryIP, physicalPort: physicalPort, output: value);
+        raspberryIP: raspberryIP,
+        physicalPort: gadget.physicalPort,
+        output: value);
     if (result.status) {
       outputFormValue = value;
       setState(ViewState.idle);

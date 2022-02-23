@@ -27,8 +27,7 @@ class GadgetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ChangeNotifierProvider(
-      create: (_) => GadgetController(
-          raspberryIP: raspberryIP, physicalPort: gadget.physicalPort),
+      create: (_) => GadgetController(raspberryIP: raspberryIP, gadget: gadget),
       child: Consumer<GadgetController>(
         builder: (context, gadgetController, _) {
           return Scaffold(
@@ -70,7 +69,8 @@ class GadgetScreen extends StatelessWidget {
                             Icons.replay_outlined,
                             size: 30,
                           ),
-                          onPressed: () => gadgetController.getGadgetData(),
+                          onPressed: () =>
+                              gadgetController.getGadgetData(gadget),
                           color: AppColors.defaultGrey,
                         ),
                       ],
@@ -78,7 +78,7 @@ class GadgetScreen extends StatelessWidget {
                   );
                 case ViewState.idle:
                   Future<void> _onRefresh() async {
-                    return await gadgetController.getGadgetData();
+                    return await gadgetController.getGadgetData(gadget);
                   }
 
                   return RefreshIndicator(

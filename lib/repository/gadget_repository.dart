@@ -7,24 +7,35 @@ import 'package:pipgesp/services/firestore_handler.dart';
 import 'package:pipgesp/services/gadget_services.dart';
 import 'package:pipgesp/services/models/result.dart';
 import 'package:pipgesp/services/utils/database_collections.dart';
+import 'package:pipgesp/ui/utils/gadget_types.dart';
 
 class GadgetRepository {
   late GadgetData gadgetData;
 
   Future<Result> getGadgetData(
-      {required String raspberryIP, required int physicalPort}) async {
+      {required String raspberryIP, required Gadget gadget}) async {
     debugPrint("state: repository");
     Result result = Result(status: false);
-
     try {
+      await GadgetServices.addGadget(
+        raspberryIP: raspberryIP,
+        physicalPort: gadget.physicalPort.toString(),
+        id: gadget.id,
+        datatype: gadget.iotype == GadgetType.spi ? 'int' : 'bool',
+        iotype: gadget.iotype.name,
+      );
+      debugPrint("state: added on server");
+
       Map<String, dynamic> json = await GadgetServices.getGadgetData(
-          raspberryIP: raspberryIP, physicalPort: physicalPort.toString());
-      json = json['data']['${physicalPort.toString()}'];
+          raspberryIP: raspberryIP,
+          physicalPort: gadget.physicalPort.toString());
+      json = json['data']['${gadget.physicalPort.toString()}'];
       gadgetData = GadgetData(
         iotype: Utils.processIOType(json['iotype']),
         name: json['string'],
         dataType: Utils.processDataType(json['datatype']),
-        lastChange: DateTime.fromMillisecondsSinceEpoch(json['last']*1000).toLocal(),
+        lastChange:
+            DateTime.fromMillisecondsSinceEpoch(json['last'] * 1000).toLocal(),
         data: json['data']!,
       );
 
